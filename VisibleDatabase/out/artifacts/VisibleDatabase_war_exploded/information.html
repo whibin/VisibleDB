@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Visible Database</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery-3.5.0.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <style>
+        h1 {
+            text-align: center;
+        }
+        img {
+            width: 140px;
+            height: 140px;
+        }
+    </style>
+    <script !src="">
+        $(function () {
+            $.get(
+                "userServlet/information",
+                {},
+                function (resultInfo) {
+                    $("#id").val(resultInfo.data.id)
+                    $("#username").val(resultInfo.data.username);
+                    $("#exampleInputPassword1").val(resultInfo.data.password);
+                    if (resultInfo.data.icon != null) {
+                        $("img").attr("src", resultInfo.data.icon);
+                    } else {
+                        $("img").attr("src", "images/icon.jpg");
+                    }
+                }
+            )
+            $("img").click(function () {
+                document.getElementById('my_photo').click();// my_photo隐藏的input[file]的id
+            })
+            $("#my_photo").change(function () {
+                // 获取上传文件对象
+                var file = $(this)[0].files[0];
+                // 读取文件URL
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                // 阅读文件完成后触发的事件
+                reader.onload = function () {
+                    // 读取的URL结果：this.result
+                    $("img").attr("src", this.result);
+                }
+            });
+            $("#username").blur(function () {
+                $.get(
+                    "userServlet/checkUsername",
+                    {
+                        username: $("#username").val()
+                    },
+                    function (resultInfo) {
+                        if (resultInfo.status) {
+                            $("#hint").addClass("glyphicon glyphicon-remove form-control-feedback")
+                            $("#label").html("Username already exists")
+                        } else {
+                            $("#hint").removeClass("glyphicon glyphicon-remove form-control-feedback")
+                            $("#label").html("Username")
+                        }
+                    }
+                )
+            })
+        })
+        function checkA() {
+            let check = /^\w{6,15}$/
+            if (!check.test($("#username").val()) || !check.test($("#exampleInputPassword1").val())) {
+                alert("wrong format!")
+                return false;
+            }
+            return true;
+        }
+        window.onload = function () {
+            document.getElementsByTagName("form")[0].onsubmit = function () {
+                return checkA();
+            }
+        }
+    </script>
+</head>
+<body>
+<!-- 导航条 -->
+<div>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">whibin</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- 跳转到个人信息 -->
+                    <li><a href="information.html">Personal Information</a></li>
+                    <li><a href="sql.html">Enter sql Database</a></li>
+                    <!-- 进入redis数据库 -->
+                    <li><a href="#">Enter redis Database</a></li>
+                    <li><a href="#">View other users authorities</a></li>
+                </ul>
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search for other users" name="search">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
+    <h1>Personal Information</h1>
+    <div class="container">
+        <form action="http://localhost:8080/VisibleDatabase_war_exploded/userServlet/updateInformation" method="post" enctype="multipart/form-data">
+            <input type="text" style="display: none" name="id" id="id">
+            <div class="form-group has-feedback" id="usernameBox">
+                <label for="username" id="label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required  aria-describedby="inputError2Status">
+                <span class="" aria-hidden="true" id="hint"></span>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="my_photo">Icon</label>
+                <img src="" class="img-circle">
+                <input type="file" id="my_photo" name="icon" style="display: none">
+                <p class="help-block">Click the icon if you need to change it</p>
+            </div>
+            <button type="submit" class="btn btn-default">Update</button>
+        </form>
+    </div>
+</body>
+</html>
