@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * @author whibin
  * @date 2020/4/29 14:53
- * @Description:
+ * @Description: 用户相关的servlet
  */
 @WebServlet("/userServlet/*")
 public class UserServlet extends BaseServlet {

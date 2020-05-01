@@ -17,7 +17,46 @@
             text-align: center;
         }
     </style>
-
+    <script !src="">
+        function setCookie(name, value) {
+            document.cookie = name + "=" + escape(value);
+        }
+        $(function () {
+            $.get(
+                "sqlServlet/getDatabase",
+                {},
+                function (databaseMap) {
+                    for (let key in databaseMap) {
+                        $("#SelectDatabase").append("<option>"+ key +"</option>")
+                    }
+                }
+            )
+            $("#CreateTable").click(function () {
+                let val = $("#SelectDatabase > option:selected").val();
+                if (val == "Select Database") {
+                    alert("Please select a database!")
+                } else {
+                    setCookie("DatabaseName",val);
+                    location.href = "CreateTable.html";
+                }
+            })
+            $("#SelectDatabase").blur(function () {
+                $.get(
+                    "sqlServlet/getDatabase",
+                    {},
+                    function (databaseMap) {
+                        let val = $("#SelectDatabase > option:selected").val();
+                        if (val != "Select Database") {
+                            $("#SelectTable").html("<option>Select Table</option>")
+                            for (let name in databaseMap[val].tableMap) {
+                                $("#SelectTable").append("<option>"+ name +"</option>")
+                            }
+                        }
+                    }
+                )
+            })
+        })
+    </script>
 </head>
 <body>
     <!-- 导航条 -->
@@ -57,14 +96,14 @@
     </div>
     <h1>SQL Database</h1>
     <div class="container" id="main">
-        <a class="btn btn-primary" href="#" role="button">Create new database</a>
-        <a class="btn btn-default" href="#" role="button">Create new table</a><br><br>
+        <a class="btn btn-primary" href="CreateDatabase.html" role="button">Create new database</a>
+        <button class="btn btn-default" href="#" role="button" id="CreateTable">Create new table</button><br><br>
         <!-- 选择数据库 -->
-        <select class="form-control">
+        <select class="form-control" id="SelectDatabase">
             <option>Select Database</option>
         </select><br>
         <!-- 选择表 -->
-        <select class="form-control">
+        <select class="form-control" id="SelectTable">
             <option>Select Table</option>
         </select><br>
         <button type="button" class="btn btn-danger">Delete database</button>
