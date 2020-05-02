@@ -40,7 +40,39 @@ public class SqlServlet extends BaseServlet {
         return userSql.getDatabaseMap();
     }
 
+    /**
+     * 创建表
+     * @param request
+     * @param response
+     */
     public void createTable(HttpServletRequest request, HttpServletResponse response) {
         service.createTable(request);
+    }
+
+    /**
+     * 删除数据库
+     * @param request
+     * @param response
+     */
+    public void deleteDatabase(HttpServletRequest request, HttpServletResponse response) {
+        service.deleteDatabase(request);
+    }
+
+    /**
+     * 删除表
+     * @param request
+     * @param response
+     */
+    public void deleteTable(HttpServletRequest request, HttpServletResponse response) {
+        service.deleteTable(request);
+    }
+
+    /**
+     * 修改数据库
+     * @param request
+     * @param response
+     */
+    public void updateDatabase(HttpServletRequest request, HttpServletResponse response) {
+        service.updateDatabase(request);
     }
 }

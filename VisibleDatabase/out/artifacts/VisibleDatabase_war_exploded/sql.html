@@ -55,6 +55,50 @@
                     }
                 )
             })
+            $("#deleteDatabase").click(function () {
+                let val = $("#SelectDatabase > option:selected").val();
+                if (val == "Select Database") {
+                    alert("Please select a database!")
+                } else {
+                    if (confirm("Do you really want to delete this database?")) {
+                        $.get(
+                            "sqlServlet/deleteDatabase",
+                            {name: val},
+                            function () {
+                                location.href = "sql.html"
+                            }
+                        )
+                    }
+                }
+            })
+            $("#deleteTable").click(function () {
+                let val = $("#SelectTable > option:selected").val();
+                if (val == "Select Table") {
+                    alert("Please select a table!")
+                } else {
+                    if (confirm("Do you really want to delete this table?")) {
+                        $.get(
+                            "sqlServlet/deleteTable",
+                            {
+                                tableName: val,
+                                databaseName: $("#SelectDatabase > option:selected").val()
+                            },
+                            function () {
+                                location.href = "sql.html"
+                            }
+                        )
+                    }
+                }
+            })
+            $("#updateDatabase").click(function () {
+                let val = $("#SelectDatabase > option:selected").val();
+                if (val == "Select Database") {
+                    alert("Please select a database!")
+                } else {
+                    setCookie("databaseName",val);
+                    location.href = "updateDatabase.html";
+                }
+            })
         })
     </script>
 </head>
@@ -106,10 +150,10 @@
         <select class="form-control" id="SelectTable">
             <option>Select Table</option>
         </select><br>
-        <button type="button" class="btn btn-danger">Delete database</button>
-        <button type="button" class="btn btn-warning">Delete Table</button>
-        <a class="btn btn-default" href="#" role="button">Update database</a>
-        <a class="btn btn-default" href="#" role="button">Update table</a><br><br>
+        <button type="button" class="btn btn-danger" id="deleteDatabase">Delete database</button>
+        <button type="button" class="btn btn-warning" id="deleteTable">Delete Table</button>
+        <button class="btn btn-default" type="button" id="updateDatabase">Update database</button>
+        <button class="btn btn-default" type="button">Update table</button><br><br>
         <!-- sql输入框 -->
         <form>
             <div class="form-group col-lg-7">

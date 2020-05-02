@@ -74,4 +74,39 @@ public class SqlServiceImpl implements SqlService {
             }
         }
     }
+
+    @Override
+    public void deleteDatabase(HttpServletRequest request) {
+        // 获取数据库名称
+        String databaseName = request.getParameter("name");
+        // 删除该数据库
+        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
+        userSql.getDatabaseMap().remove(databaseName);
+    }
+
+    @Override
+    public void deleteTable(HttpServletRequest request) {
+        // 获取数据库和表名
+        String tableName = request.getParameter("tableName");
+        String databaseName = request.getParameter("databaseName");
+        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
+        // 删除表
+        userSql.getDatabaseMap().get(databaseName).getTableMap().remove(tableName);
+    }
+
+    @Override
+    public void updateDatabase(HttpServletRequest request) {
+        // 获取新旧数据库的名称
+        String oldName = request.getParameter("oldName");
+        String newName = request.getParameter("newName");
+        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
+        // 获取databaseMap
+        Map<String, Database> databaseMap = userSql.getDatabaseMap();
+        // 获取旧数据库
+        Database database = databaseMap.get(oldName);
+        // 将旧数据库名称从databaseMap删除
+        databaseMap.remove(oldName);
+        // 将新的数据库名称添加进去
+        databaseMap.put(newName,database);
+    }
 }

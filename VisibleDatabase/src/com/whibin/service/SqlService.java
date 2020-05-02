@@ -22,4 +22,22 @@ public interface SqlService {
      * @param request
      */
     void createTable(HttpServletRequest request);
+
+    /**
+     * 删除数据库
+     * @param request
+     */
+    void deleteDatabase(HttpServletRequest request);
+
+    /**
+     * 删除表
+     * @param request
+     */
+    void deleteTable(HttpServletRequest request);
+
+    /**
+     * 修改数据库
+     * @param request
+     */
+    void updateDatabase(HttpServletRequest request);
 }
