@@ -1,8 +1,5 @@
-package com.whibin.util;
+package com.whibin.util.jdbc;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;

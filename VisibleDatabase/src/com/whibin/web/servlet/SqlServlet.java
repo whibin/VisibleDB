@@ -3,6 +3,7 @@ package com.whibin.web.servlet;
 import com.whibin.domain.vo.UserSql;
 import com.whibin.service.SqlService;
 import com.whibin.service.impl.SqlServiceImpl;
+import net.sf.jsqlparser.JSQLParserException;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -110,5 +111,15 @@ public class SqlServlet extends BaseServlet {
      */
     public void updateData(HttpServletRequest request, HttpServletResponse response) {
         service.updateData(request);
+    }
+
+    /**
+     * 解析sql语句
+     * @param request
+     * @param response
+     * @return
+     */
+    public Object parseSql(HttpServletRequest request, HttpServletResponse response) throws JSQLParserException {
+        return service.parseSql(request);
     }
 }

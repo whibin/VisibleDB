@@ -233,6 +233,25 @@
                 location.href = "sql.html";
             }
             $("#add").ajaxForm(options);
+            // sql表单提交
+            var options2 = {
+                beforeSubmit: addDatabaseName,
+                success: show,
+                url: "sqlServlet/parseSql",
+                dataType: "json",
+                resetForm: true
+            }
+            function addDatabaseName() {
+                setCookie("databaseName",$("#SelectDatabase > option:selected").val());
+            }
+            function show(resultInfo) {
+                if (!resultInfo.status) {
+                    alert(resultInfo.message);
+                } else {
+                    location.href = "sql.html";
+                }
+            }
+            $("#sql").ajaxForm(options2);
         })
     </script>
 </head>
@@ -289,9 +308,9 @@
         <button class="btn btn-default" type="button" id="updateDatabase">Update database</button>
         <button class="btn btn-default" type="button" id="updateTable">Table information</button><br><br>
         <!-- sql输入框 -->
-        <form>
+        <form id="sql">
             <div class="form-group col-lg-7">
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Input sql">
+                <input type="text" class="form-control" placeholder="Input sql" name="sql">
             </div>
             <button type="submit" class="btn btn-default">Execute</button>
         </form>

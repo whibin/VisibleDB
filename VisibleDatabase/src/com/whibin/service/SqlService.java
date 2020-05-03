@@ -1,6 +1,7 @@
 package com.whibin.service;
 
 import com.whibin.domain.vo.UserSql;
+import net.sf.jsqlparser.JSQLParserException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -64,4 +65,11 @@ public interface SqlService {
      * @param request
      */
     void updateData(HttpServletRequest request);
+
+    /**
+     * 解析sql语句
+     * @param request
+     * @return
+     */
+    Object parseSql(HttpServletRequest request) throws JSQLParserException;
 }

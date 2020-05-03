@@ -2,7 +2,7 @@ package com.whibin.dao.impl;
 
 import com.whibin.dao.UserDao;
 import com.whibin.domain.po.User;
-import com.whibin.util.JDBCUtil;
+import com.whibin.util.jdbc.JDBCUtil;
 
 /**
  * @author whibin

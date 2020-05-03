@@ -1,4 +1,4 @@
-package com.whibin.util;
+package com.whibin.util.jdbc;
 
 import java.sql.Connection;
 

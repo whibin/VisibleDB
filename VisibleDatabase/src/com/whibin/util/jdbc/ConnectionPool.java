@@ -1,10 +1,12 @@
-package com.whibin.util;
+package com.whibin.util.jdbc;
+
+import com.whibin.util.LoadDriver;
+import com.whibin.util.PropertiesUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 数据库连接池
