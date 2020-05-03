@@ -6,10 +6,10 @@ import com.whibin.domain.vo.Table;
 import com.whibin.domain.vo.UserSql;
 import com.whibin.service.SqlService;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author whibin
@@ -51,28 +51,7 @@ public class SqlServiceImpl implements SqlService {
             tableMap = new HashMap<>();
             database.setTableMap(tableMap);
         }
-        Table table = new Table();
-        tableMap.put(request.getParameter("tableName"),table);
-        Map<String, Class> fieldType = new HashMap<>();
-        table.setFieldType(fieldType);
-        // 获取字段名称和类型
-        Map<String, String[]> parameterMap = request.getParameterMap();
-        String[] fields = parameterMap.get("field");
-        String[] dataTypes = parameterMap.get("dataType");
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i] == null || "".equals(fields[i])) {
-                continue;
-            }
-            if ("bigint".equals(dataTypes[i])) {
-                fieldType.put(fields[i],Long.class);
-            }
-            if ("int".equals(dataTypes[i]) || "mediumint".equals(dataTypes[i])) {
-                fieldType.put(fields[i],Integer.class);
-            }
-            if ("char".equals(dataTypes[i]) || "varchar".equals(dataTypes[i])) {
-                fieldType.put(fields[i],String.class);
-            }
-        }
+        newTable(tableMap,request);
     }
 
     @Override
@@ -108,5 +87,88 @@ public class SqlServiceImpl implements SqlService {
         databaseMap.remove(oldName);
         // 将新的数据库名称添加进去
         databaseMap.put(newName,database);
+    }
+
+    @Override
+    public void updateTable(HttpServletRequest request) {
+        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
+        Database database = userSql.getDatabaseMap().get(request.getParameter("databaseName"));
+        Map<String, Table> tableMap = database.getTableMap();
+        String oldTableName = request.getParameter("oldTableName");
+        tableMap.remove(oldTableName);
+        newTable(tableMap,request);
+    }
+
+    @Override
+    public void addData(HttpServletRequest request) {
+        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
+        String databaseName = null;
+        String tableName = null;
+        for (Cookie cookie : request.getCookies()) {
+            if ("databaseName".equals(cookie.getName())) {
+                databaseName = cookie.getValue();
+                System.out.println(databaseName);
+            }
+            if ("tableName".equals(cookie.getName())) {
+                tableName = cookie.getValue();
+                System.out.println(tableName);
+            }
+        }
+        Table table = userSql.getDatabaseMap().get(databaseName).getTableMap().get(tableName);
+        String[] data = request.getParameterMap().get("data");
+        System.out.println(Arrays.toString(data));
+        System.out.println(table.getFieldType());
+        Map<String, List<String>> tableData = table.getData();
+        // 判断tableData是否存在，若不存在则新建
+        if (tableData == null) {
+            tableData = new HashMap<>();
+            // 为数据设置字段名
+            for (Map.Entry<String, String> entry : table.getFieldType().entrySet()) {
+                tableData.put(entry.getKey(),new ArrayList<>());
+            }
+            table.setData(tableData);
+        }
+        // 若存在，则直接操作
+        int i = 0;
+        for (Map.Entry<String, String> entry : table.getFieldType().entrySet()) {
+            tableData.get(entry.getKey()).add(data[i++]);
+        }
+    }
+
+    @Override
+    public void deleteData(HttpServletRequest request) {
+        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
+        Table table = userSql.getDatabaseMap().get(request.getParameter("databaseName"))
+                .getTableMap().get(request.getParameter("tableName"));
+        String id = request.getParameter("id");
+        Map<String, String> fieldType = table.getFieldType();
+        Map<String, List<String>> data = table.getData();
+        for (Map.Entry<String, String> entry : fieldType.entrySet()) {
+            List<String> list = data.get(entry.getKey());
+            list.remove(Integer.parseInt(id));
+        }
+        System.out.println(data);
+    }
+
+    /**
+     * 创建一个新的表
+     * @param tableMap
+     * @param request
+     */
+    private void newTable(Map<String, Table> tableMap, HttpServletRequest request) {
+        Table table = new Table();
+        tableMap.put(request.getParameter("tableName"),table);
+        Map<String, String> fieldType = new HashMap<>();
+        table.setFieldType(fieldType);
+        // 获取字段名称和类型
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        String[] fields = parameterMap.get("field");
+        String[] dataTypes = parameterMap.get("dataType");
+        for (int i = 0; i < fields.length; i++) {
+            if (fields[i] == null || "".equals(fields[i])) {
+                continue;
+            }
+            fieldType.put(fields[i],dataTypes[i]);
+        }
     }
 }

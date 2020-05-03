@@ -2,6 +2,7 @@ package com.whibin.domain.vo;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,6 +12,6 @@ import java.util.Map;
  */
 @Data
 public class Table {
-    private Map<String, Class> fieldType;
-    private Map<String, String[]> data;
+    private Map<String, String> fieldType;
+    private Map<String, List<String>> data;
 }

@@ -75,4 +75,31 @@ public class SqlServlet extends BaseServlet {
     public void updateDatabase(HttpServletRequest request, HttpServletResponse response) {
         service.updateDatabase(request);
     }
+
+    /**
+     * 修改表
+     * @param request
+     * @param response
+     */
+    public void updateTable(HttpServletRequest request, HttpServletResponse response) {
+        service.updateTable(request);
+    }
+
+    /**
+     * 添加表的数据
+     * @param request
+     * @param response
+     */
+    public void addData(HttpServletRequest request, HttpServletResponse response) {
+        service.addData(request);
+    }
+
+    /**
+     * 删除表的数据
+     * @param request
+     * @param response
+     */
+    public void deleteData(HttpServletRequest request, HttpServletResponse response) {
+        service.deleteData(request);
+    }
 }

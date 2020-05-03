@@ -51,6 +51,41 @@
     </script>
 </head>
 <body>
+<!-- 导航条 -->
+<div>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">whibin</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- 跳转到个人信息 -->
+                    <li><a href="information.html">Personal Information</a></li>
+                    <li><a href="sql.html">Enter sql Database</a></li>
+                    <!-- 进入redis数据库 -->
+                    <li><a href="#">Enter redis Database</a></li>
+                    <li><a href="#">View other users authorities</a></li>
+                </ul>
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search for other users" name="search">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
     <div class="container">
         <h1>Create Table</h1>
         <form>
@@ -65,12 +100,12 @@
             <!-- 字段设置 -->
             <div>
                 <div class="form-group">
-                    <label for='field'>Field</label>
-                    <input type="text" class="form-control" id='field' placeholder="Field name" required name='field'>
+                    <label for='field1'>Field</label>
+                    <input type="text" class="form-control" id='field1' placeholder="Field name" required name='field'>
                 </div>
                 <div class="form-group">
-                    <label for='dataType'>Data type</label>
-                    <select class="form-control" id='dataType' name='dataType'>
+                    <label for='dataType1'>Data type</label>
+                    <select class="form-control" id='dataType1' name='dataType'>
                         <option>bigint</option>
                         <option>int</option>
                         <option>mediumint</option>
@@ -81,12 +116,12 @@
             </div>
             <div>
                 <div class="form-group">
-                    <label for='field'>Field</label>
-                    <input type="text" class="form-control" id='field' placeholder="Field name" name='field'>
+                    <label for='field2'>Field</label>
+                    <input type="text" class="form-control" id='field2' placeholder="Field name" name='field'>
                 </div>
                 <div class="form-group">
-                    <label for='dataType'>Data type</label>
-                    <select class="form-control" id='dataType' name='dataType'>
+                    <label for='dataType2'>Data type</label>
+                    <select class="form-control" id='dataType2' name='dataType'>
                         <option>bigint</option>
                         <option>int</option>
                         <option>mediumint</option>
@@ -97,12 +132,12 @@
             </div>
             <div>
                 <div class="form-group">
-                    <label for='field'>Field</label>
-                    <input type="text" class="form-control" id='field' placeholder="Field name" name='field'>
+                    <label for='field3'>Field</label>
+                    <input type="text" class="form-control" id='field3' placeholder="Field name" name='field'>
                 </div>
                 <div class="form-group">
-                    <label for='dataType'>Data type</label>
-                    <select class="form-control" id='dataType' name='dataType'>
+                    <label for='dataType3'>Data type</label>
+                    <select class="form-control" id='dataType3' name='dataType'>
                         <option>bigint</option>
                         <option>int</option>
                         <option>mediumint</option>
@@ -113,12 +148,12 @@
             </div>
             <div>
                 <div class="form-group">
-                    <label for='field'>Field</label>
-                    <input type="text" class="form-control" id='field' placeholder="Field name" name='field'>
+                    <label for='field4'>Field</label>
+                    <input type="text" class="form-control" id='field4' placeholder="Field name" name='field'>
                 </div>
                 <div class="form-group">
-                    <label for='dataType'>Data type</label>
-                    <select class="form-control" id='dataType' name='dataType'>
+                    <label for='dataType4'>Data type</label>
+                    <select class="form-control" id='dataType4' name='dataType'>
                         <option>bigint</option>
                         <option>int</option>
                         <option>mediumint</option>

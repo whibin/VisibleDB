@@ -27,10 +27,29 @@
         }
         $(function () {
             $("#databaseName").val(getCookie("DatabaseName"));
+            $("#oldTableName").val(getCookie("tableName"));
+            $("#tableName").val(getCookie("tableName"));
+            $.get(
+                "sqlServlet/getDatabase",
+                {},
+                function (databaseMap) {
+                    let i = 1;
+                    let x = databaseMap[getCookie("DatabaseName")].tableMap[getCookie("tableName")].fieldType;
+                    for (let name in x) {
+                        $("#field"+i).val(name);
+                        for (let v of $("#dataType"+i+" > option")) {
+                            if ($(v).html() == x[name]) {
+                                $(v).prop("selected",true);
+                            }
+                        }
+                        i++;
+                    }
+                }
+            )
             var options = {
                 beforeSubmit: check,
                 success: jump,
-                url: "sqlServlet/createTable",
+                url: "sqlServlet/updateTable",
                 dataType: "json",
                 resetForm: true
             }
@@ -87,8 +106,9 @@
     </nav>
 </div>
     <div class="container">
-        <h1>Create Table</h1>
+        <h1>Table information</h1>
         <form>
+            <input type="text" name="oldTableName" id="oldTableName" style="display: none">
             <div class="form-group">
                 <label for="databaseName">Your selected Database</label>
                 <input type="text" class="form-control" id="databaseName" name="databaseName" readonly>
@@ -162,7 +182,7 @@
                     </select>
                 </div>
             </div>
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-default">Update</button>
         </form>
     </div>
 </body>

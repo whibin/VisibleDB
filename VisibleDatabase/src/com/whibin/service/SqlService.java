@@ -40,4 +40,22 @@ public interface SqlService {
      * @param request
      */
     void updateDatabase(HttpServletRequest request);
+
+    /**
+     * 修改表
+     * @param request
+     */
+    void updateTable(HttpServletRequest request);
+
+    /**
+     * 添加表数据
+     * @param request
+     */
+    void addData(HttpServletRequest request);
+
+    /**
+     * 删除表数据
+     * @param request
+     */
+    void deleteData(HttpServletRequest request);
 }

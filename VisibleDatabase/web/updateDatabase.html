@@ -57,6 +57,41 @@
     </script>
 </head>
 <body>
+<!-- 导航条 -->
+<div>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">whibin</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- 跳转到个人信息 -->
+                    <li><a href="information.html">Personal Information</a></li>
+                    <li><a href="sql.html">Enter sql Database</a></li>
+                    <!-- 进入redis数据库 -->
+                    <li><a href="#">Enter redis Database</a></li>
+                    <li><a href="#">View other users authorities</a></li>
+                </ul>
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search for other users" name="search">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
     <h1>Update Database</h1>
     <div class="container" id="main">
         <form class="form-horizontal" method="get">
@@ -80,7 +115,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default">Submit</button>
+                    <button type="submit" class="btn btn-default">Update</button>
                 </div>
             </div>
         </form>
