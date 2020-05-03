@@ -58,4 +58,10 @@ public interface SqlService {
      * @param request
      */
     void deleteData(HttpServletRequest request);
+
+    /**
+     * 修改表数据
+     * @param request
+     */
+    void updateData(HttpServletRequest request);
 }

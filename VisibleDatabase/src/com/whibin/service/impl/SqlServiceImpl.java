@@ -116,23 +116,7 @@ public class SqlServiceImpl implements SqlService {
         }
         Table table = userSql.getDatabaseMap().get(databaseName).getTableMap().get(tableName);
         String[] data = request.getParameterMap().get("data");
-        System.out.println(Arrays.toString(data));
-        System.out.println(table.getFieldType());
-        Map<String, List<String>> tableData = table.getData();
-        // 判断tableData是否存在，若不存在则新建
-        if (tableData == null) {
-            tableData = new HashMap<>();
-            // 为数据设置字段名
-            for (Map.Entry<String, String> entry : table.getFieldType().entrySet()) {
-                tableData.put(entry.getKey(),new ArrayList<>());
-            }
-            table.setData(tableData);
-        }
-        // 若存在，则直接操作
-        int i = 0;
-        for (Map.Entry<String, String> entry : table.getFieldType().entrySet()) {
-            tableData.get(entry.getKey()).add(data[i++]);
-        }
+        addData(table,data);
     }
 
     @Override
@@ -141,13 +125,31 @@ public class SqlServiceImpl implements SqlService {
         Table table = userSql.getDatabaseMap().get(request.getParameter("databaseName"))
                 .getTableMap().get(request.getParameter("tableName"));
         String id = request.getParameter("id");
-        Map<String, String> fieldType = table.getFieldType();
-        Map<String, List<String>> data = table.getData();
-        for (Map.Entry<String, String> entry : fieldType.entrySet()) {
-            List<String> list = data.get(entry.getKey());
-            list.remove(Integer.parseInt(id));
+        deleteData(table,id);
+    }
+
+    @Override
+    public void updateData(HttpServletRequest request) {
+        // 先删除
+        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
+        Table table = userSql.getDatabaseMap().get(request.getParameter("databaseName"))
+                .getTableMap().get(request.getParameter("tableName"));
+        String id = request.getParameter("id");
+        deleteData(table,id);
+        // 后添加
+        List<String> newData = new ArrayList<>();
+        for (String datum : request.getParameterMap().get("data")) {
+            if (datum == null || "".equals(datum) || "undefined".equals(datum)) {
+                continue;
+            }
+            newData.add(datum);
         }
-        System.out.println(data);
+        // 如果集合中的数量为0，说明此时不需要再添加表数据
+        if (newData.size() <= 0) {
+            return;
+        }
+        addData(table, (String[]) newData.toArray(new String[newData.size()]));
+        System.out.println(newData);
     }
 
     /**
@@ -169,6 +171,43 @@ public class SqlServiceImpl implements SqlService {
                 continue;
             }
             fieldType.put(fields[i],dataTypes[i]);
+        }
+    }
+
+    /**
+     * 删除表中指定的数据
+     * @param table
+     * @param id
+     */
+    private void deleteData(Table table, String id) {
+        Map<String, String> fieldType = table.getFieldType();
+        Map<String, List<String>> data = table.getData();
+        for (Map.Entry<String, String> entry : fieldType.entrySet()) {
+            List<String> list = data.get(entry.getKey());
+            list.remove(Integer.parseInt(id));
+        }
+    }
+
+    /**
+     * 向表中添加指定数据
+     * @param table
+     * @param data
+     */
+    private void addData(Table table, String[] data) {
+        Map<String, List<String>> tableData = table.getData();
+        // 判断tableData是否存在，若不存在则新建
+        if (tableData == null) {
+            tableData = new HashMap<>();
+            // 为数据设置字段名
+            for (Map.Entry<String, String> entry : table.getFieldType().entrySet()) {
+                tableData.put(entry.getKey(),new ArrayList<>());
+            }
+            table.setData(tableData);
+        }
+        // 若存在，则直接操作
+        int i = 0;
+        for (Map.Entry<String, String> entry : table.getFieldType().entrySet()) {
+            tableData.get(entry.getKey()).add(data[i++]);
         }
     }
 }

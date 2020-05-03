@@ -102,4 +102,13 @@ public class SqlServlet extends BaseServlet {
     public void deleteData(HttpServletRequest request, HttpServletResponse response) {
         service.deleteData(request);
     }
+
+    /**
+     * 修改表的数据
+     * @param request
+     * @param response
+     */
+    public void updateData(HttpServletRequest request, HttpServletResponse response) {
+        service.updateData(request);
+    }
 }

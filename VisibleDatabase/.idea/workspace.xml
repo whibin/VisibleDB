@@ -11,26 +11,17 @@
   <component name="ChangeListManager">
     <list default="true" id="144502a9-fc4e-46e8-86a7-80eac9871dc2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/CreateDatabase.html" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/CreateDatabase.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/CreateTable.html" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/CreateTable.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/domain/vo/Table.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/domain/vo/Table.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/service/SqlService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/service/SqlService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/service/impl/SqlServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/service/impl/SqlServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/servlet/SqlServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/servlet/SqlServlet.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/sql.html" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/sql.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/updateDatabase.html" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/updateDatabase.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/domain/vo/Table.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/domain/vo/Table.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/service/SqlService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/service/SqlService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/service/impl/SqlServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/service/impl/SqlServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/servlet/SqlServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/servlet/SqlServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/whibin/domain/vo/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whibin/domain/vo/Table.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/whibin/service/SqlService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whibin/service/SqlService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/whibin/service/impl/SqlServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whibin/service/impl/SqlServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/whibin/web/servlet/SqlServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whibin/web/servlet/SqlServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/CreateDatabase.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/CreateDatabase.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/CreateTable.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/CreateTable.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/sql.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/sql.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/updateDatabase.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/updateDatabase.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,7 +222,7 @@
               <path>
                 <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
                 <item name="Tomcat Server" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-                <item name="Running" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="Finished" type="7427dc5b:ServiceModel$ServiceGroupNode" />
               </path>
             </expand>
             <select />
@@ -256,7 +247,7 @@
       <workItem from="1588271813747" duration="437000" />
       <workItem from="1588272390208" duration="31646000" />
       <workItem from="1588389853282" duration="10639000" />
-      <workItem from="1588413483824" duration="13056000" />
+      <workItem from="1588413483824" duration="25164000" />
     </task>
     <task id="LOCAL-00001" summary="feat(com/whibin/service&amp;web): 实现了删除数据库、删除表、修改数据库的功能">
       <created>1588394374042</created>
@@ -265,7 +256,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588394374042</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat(com/whibin/service&amp;web): 实现了修改表、查看表信息、查看表数据、删除表数据、添加表数据的功能">
+      <created>1588482893399</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1588482893399</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -286,89 +284,90 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat(com/whibin/service&amp;web): 实现了删除数据库、删除表、修改数据库的功能" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(com/whibin/service&amp;web): 实现了删除数据库、删除表、修改数据库的功能" />
+    <MESSAGE value="feat(com/whibin/service&amp;web): 实现了修改表、查看表信息、查看表数据、删除表数据、添加表数据的功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(com/whibin/service&amp;web): 实现了修改表、查看表信息、查看表数据、删除表数据、添加表数据的功能" />
   </component>
   <component name="WindowStateProjectService">
     <state x="137" y="21" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588307126083">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="137" y="21" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1588307126083" />
-    <state x="488" y="71" key="#com.intellij.ide.util.MemberChooser" timestamp="1588478675385">
+    <state x="488" y="71" key="#com.intellij.ide.util.MemberChooser" timestamp="1588493049760">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="488" y="71" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1588478675385" />
-    <state x="247" y="0" key="CommitChangelistDialog2" timestamp="1588394371162">
+    <state x="488" y="71" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1588493049760" />
+    <state x="247" y="0" key="CommitChangelistDialog2" timestamp="1588482891346">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="247" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1588394371162" />
+    <state x="247" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1588482891346" />
     <state x="463" y="121" key="FileChooserDialogImpl" timestamp="1588477924949">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="121" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1588477924949" />
-    <state width="1078" height="262" key="GridCell.Tab.0.bottom" timestamp="1588481383082">
+    <state width="1078" height="475" key="GridCell.Tab.0.bottom" timestamp="1588496445244">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="262" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588481383082" />
-    <state width="1078" height="262" key="GridCell.Tab.0.center" timestamp="1588481383082">
+    <state width="1078" height="475" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588496445244" />
+    <state width="1078" height="475" key="GridCell.Tab.0.center" timestamp="1588496445244">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="262" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1588481383082" />
-    <state width="1078" height="262" key="GridCell.Tab.0.left" timestamp="1588481383082">
+    <state width="1078" height="475" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1588496445244" />
+    <state width="1078" height="475" key="GridCell.Tab.0.left" timestamp="1588496445244">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="262" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1588481383082" />
-    <state width="1078" height="262" key="GridCell.Tab.0.right" timestamp="1588481383082">
+    <state width="1078" height="475" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1588496445244" />
+    <state width="1078" height="475" key="GridCell.Tab.0.right" timestamp="1588496445244">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="262" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1588481383082" />
-    <state width="1078" height="262" key="GridCell.Tab.1.bottom" timestamp="1588481383083">
+    <state width="1078" height="475" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1588496445244" />
+    <state width="1078" height="475" key="GridCell.Tab.1.bottom" timestamp="1588496445244">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="262" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588481383083" />
-    <state width="1078" height="262" key="GridCell.Tab.1.center" timestamp="1588481383082">
+    <state width="1078" height="475" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588496445244" />
+    <state width="1078" height="475" key="GridCell.Tab.1.center" timestamp="1588496445244">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="262" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1588481383082" />
-    <state width="1078" height="262" key="GridCell.Tab.1.left" timestamp="1588481383082">
+    <state width="1078" height="475" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1588496445244" />
+    <state width="1078" height="475" key="GridCell.Tab.1.left" timestamp="1588496445244">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="262" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1588481383082" />
-    <state width="1078" height="262" key="GridCell.Tab.1.right" timestamp="1588481383083">
+    <state width="1078" height="475" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1588496445244" />
+    <state width="1078" height="475" key="GridCell.Tab.1.right" timestamp="1588496445244">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="262" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1588481383083" />
-    <state width="1078" height="262" key="GridCell.Tab.2.bottom" timestamp="1588481383083">
+    <state width="1078" height="475" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1588496445244" />
+    <state width="1078" height="475" key="GridCell.Tab.2.bottom" timestamp="1588496445245">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="262" key="GridCell.Tab.2.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588481383083" />
-    <state width="1078" height="262" key="GridCell.Tab.2.center" timestamp="1588481383083">
+    <state width="1078" height="475" key="GridCell.Tab.2.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588496445245" />
+    <state width="1078" height="475" key="GridCell.Tab.2.center" timestamp="1588496445244">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="262" key="GridCell.Tab.2.center/0.0.1366.728@0.0.1366.728" timestamp="1588481383083" />
-    <state width="1078" height="262" key="GridCell.Tab.2.left" timestamp="1588481383083">
+    <state width="1078" height="475" key="GridCell.Tab.2.center/0.0.1366.728@0.0.1366.728" timestamp="1588496445244" />
+    <state width="1078" height="475" key="GridCell.Tab.2.left" timestamp="1588496445244">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="262" key="GridCell.Tab.2.left/0.0.1366.728@0.0.1366.728" timestamp="1588481383083" />
-    <state width="1078" height="262" key="GridCell.Tab.2.right" timestamp="1588481383083">
+    <state width="1078" height="475" key="GridCell.Tab.2.left/0.0.1366.728@0.0.1366.728" timestamp="1588496445244" />
+    <state width="1078" height="475" key="GridCell.Tab.2.right" timestamp="1588496445244">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="262" key="GridCell.Tab.2.right/0.0.1366.728@0.0.1366.728" timestamp="1588481383083" />
-    <state width="1078" height="200" key="GridCell.Tab.3.bottom" timestamp="1588306998521">
+    <state width="1078" height="475" key="GridCell.Tab.2.right/0.0.1366.728@0.0.1366.728" timestamp="1588496445244" />
+    <state width="1078" height="475" key="GridCell.Tab.3.bottom" timestamp="1588496233905">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="200" key="GridCell.Tab.3.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588306998521" />
-    <state width="1078" height="200" key="GridCell.Tab.3.center" timestamp="1588306998521">
+    <state width="1078" height="475" key="GridCell.Tab.3.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588496233905" />
+    <state width="1078" height="475" key="GridCell.Tab.3.center" timestamp="1588496233905">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="200" key="GridCell.Tab.3.center/0.0.1366.728@0.0.1366.728" timestamp="1588306998521" />
-    <state width="1078" height="200" key="GridCell.Tab.3.left" timestamp="1588306998521">
+    <state width="1078" height="475" key="GridCell.Tab.3.center/0.0.1366.728@0.0.1366.728" timestamp="1588496233905" />
+    <state width="1078" height="475" key="GridCell.Tab.3.left" timestamp="1588496233905">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="200" key="GridCell.Tab.3.left/0.0.1366.728@0.0.1366.728" timestamp="1588306998521" />
-    <state width="1078" height="200" key="GridCell.Tab.3.right" timestamp="1588306998521">
+    <state width="1078" height="475" key="GridCell.Tab.3.left/0.0.1366.728@0.0.1366.728" timestamp="1588496233905" />
+    <state width="1078" height="475" key="GridCell.Tab.3.right" timestamp="1588496233905">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="200" key="GridCell.Tab.3.right/0.0.1366.728@0.0.1366.728" timestamp="1588306998521" />
+    <state width="1078" height="475" key="GridCell.Tab.3.right/0.0.1366.728@0.0.1366.728" timestamp="1588496233905" />
     <state width="220" height="477" key="HiddenNamespacesPopup" timestamp="1588145094656">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

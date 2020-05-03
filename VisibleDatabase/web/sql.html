@@ -40,6 +40,40 @@
                 )
             }
         }
+        var q = 0;
+        function update(id) {
+            if (q == 0) {
+                q++;
+                let y = id + 2;
+                let count = 0;
+                for (let v of $("tr:eq("+y+") > td")) {
+                    count++;
+                }
+                count = count - 1;
+                $("tr:eq("+y+")").after("<tr id='formRow'></tr>");
+                for (let i = 0; i < count; i++) {
+                    $("#formRow").append("<td><input name='data' value='"+$("tr:eq("+y+") > td:eq("+i+")").html()+"'></td>");
+                }
+                $("#formRow").append("<td><button type=\"button\" class=\"btn btn-default\" id=\"submitUpdate\">update</button></td>");
+                $("#submitUpdate").click(function () {
+                    $.get(
+                        "sqlServlet/updateData?data="+$("#formRow > td > input:eq(0)").val()+"&data="+$("#formRow > td > input:eq(1)").val()+"&data="+$("#formRow > td > input:eq(2)").val()+"&data="+$("#formRow > td > input:eq(3)").val(),
+                        {
+                            databaseName: $("#SelectDatabase > option:selected").val(),
+                            tableName: $("#SelectTable > option:selected").val(),
+                            id: id
+                        },
+                        function () {
+                            location.href = "sql.html";
+                        }
+                    )
+
+                })
+                $("tr:eq("+y+")").remove();
+            } else {
+                alert("Please submit the data you're updating, then you can update this row's data!")
+            }
+        }
         $(function () {
             $.get(
                 "sqlServlet/getDatabase",
@@ -145,7 +179,7 @@
                                     $("#Input").append("<td><input type='text' name='data' id='data'></td>")
                                 }
                                 $("#title").append("<th>Operation</th>")
-                                $("#Input").append("<td><button class='btn btn-default' type='submit'>Submit</button></td>")
+                                $("#Input").append("<td><button class='btn btn-default' type='submit'>Add</button></td>")
                                 $("#title").css("backgroundColor","pink")
                             }
                             // 获取数据
@@ -162,7 +196,7 @@
                                     for (let key in fields) {
                                         $("tr:last").append("<td>"+ data[key][j] +"</td>");
                                     }
-                                    $("tr:last").append("<td><a role='button' class='btn btn-default' id='update'>update</a><a role='button' class='btn btn-warning' href='javascript:remove("+j+")'>delete</a></td>");
+                                    $("tr:last").append("<td><a role='button' class='btn btn-default' id='update' href='javascript:update("+j+")'>update</a><a role='button' class='btn btn-warning' href='javascript:remove("+j+")'>delete</a></td>");
                                 }
                             }
                         }
