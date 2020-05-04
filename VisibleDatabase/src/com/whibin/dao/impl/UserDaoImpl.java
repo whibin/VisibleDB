@@ -30,4 +30,10 @@ public class UserDaoImpl implements UserDao {
         String sql = "update user set username=?,password=?,icon=? where id=?";
         template.update(sql,user.getUsername(),user.getPassword(),user.getIcon(),user.getId());
     }
+
+    @Override
+    public User get(Integer id) {
+        String sql = "select id,username,password,icon from user where id=?";
+        return (User) template.queryForSingle(sql, id);
+    }
 }

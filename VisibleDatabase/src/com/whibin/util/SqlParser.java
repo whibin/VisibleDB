@@ -176,6 +176,9 @@ public class SqlParser {
         System.out.println(Arrays.toString(itemsList));
         List<String> fieldValue = new ArrayList<>();
         for (int i = 0; i < itemsList.length; i++) {
+            if (i == 0 && itemsList.length == 1) {
+                fieldValue.add(itemsList[i].substring(1,itemsList[i].lastIndexOf(")")));
+            }
             if (i == 0) {
                 fieldValue.add(itemsList[i].substring(1));
             } else if (i == itemsList.length - 1) {

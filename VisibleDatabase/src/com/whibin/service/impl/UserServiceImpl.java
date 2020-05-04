@@ -6,12 +6,15 @@ import com.whibin.domain.po.User;
 import com.whibin.domain.vo.ResultInfo;
 import com.whibin.service.UserService;
 import com.whibin.util.BeanUtil;
+import com.whibin.util.GetUserId;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,7 +33,7 @@ public class UserServiceImpl implements UserService {
     private UserDao dao = new UserDaoImpl();
 
     @Override
-    public Boolean login(HttpServletRequest request) {
+    public Boolean login(HttpServletRequest request, HttpServletResponse response) {
         Map<String, String[]> parameterMap = request.getParameterMap();
         HttpSession session = request.getSession();
         // 判断验证码是否正确
@@ -53,6 +56,7 @@ public class UserServiceImpl implements UserService {
         }
         // 若均正确
         session.setAttribute("user",user);
+        System.out.println(user.getId());
         return true;
     }
 
@@ -136,7 +140,19 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         BeanUtil.populate(user,map);
         dao.update(user);
-        request.getSession().setAttribute("user",user);
+        request.getSession().setAttribute("user" + GetUserId.getUserId(request),user);
+    }
+
+    @Override
+    public User getInformation(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String id = GetUserId.getUserId(request);
+        Object user = session.getAttribute("user" + id);
+        if (user == null) {
+            user = dao.get(Integer.parseInt(id));
+            session.setAttribute("user" + id,user);
+        }
+        return (User) user;
     }
 
     /**

@@ -3,6 +3,7 @@ package com.whibin.web.servlet;
 import com.whibin.domain.vo.UserDatabase;
 import com.whibin.service.SqlService;
 import com.whibin.service.impl.SqlServiceImpl;
+import com.whibin.util.GetUserId;
 import net.sf.jsqlparser.JSQLParserException;
 
 import javax.servlet.annotation.WebServlet;
@@ -34,7 +35,7 @@ public class SqlServlet extends BaseServlet {
      * @return
      */
     public Object getDatabase(HttpServletRequest request, HttpServletResponse response) {
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+ GetUserId.getUserId(request));
         if (userDatabase == null) {
             return null;
         }

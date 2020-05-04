@@ -27,4 +27,11 @@ public interface UserDao {
      * @param user
      */
     void update(User user);
+
+    /**
+     * 查询用户
+     * @param id
+     * @return
+     */
+    User get(Integer id);
 }

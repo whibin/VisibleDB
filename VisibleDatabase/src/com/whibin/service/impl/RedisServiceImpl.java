@@ -1,11 +1,14 @@
 package com.whibin.service.impl;
 
+import com.whibin.dao.UserDao;
+import com.whibin.dao.impl.UserDaoImpl;
 import com.whibin.domain.po.User;
 import com.whibin.domain.vo.Database;
 import com.whibin.domain.vo.RedisDatabase;
 import com.whibin.domain.vo.ResultInfo;
 import com.whibin.domain.vo.UserDatabase;
 import com.whibin.service.RedisService;
+import com.whibin.util.GetUserId;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +23,8 @@ import java.util.Map;
  */
 
 public class RedisServiceImpl implements RedisService {
+    private UserDao dao = new UserDaoImpl();
+
     @Override
     public void createDatabase(HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -31,23 +36,33 @@ public class RedisServiceImpl implements RedisService {
         name = name.toLowerCase();
         // 创建redisDatabase对象
         RedisDatabase redisDatabase = new RedisDatabase();
+        String id = GetUserId.getUserId(request);
         // 在session中获取userDatabase，若为空则新建一个
-        Object newUserDatabase = session.getAttribute("userDatabase");
+        Object newUserDatabase = session.getAttribute("userDatabase"+id);
         if (newUserDatabase != null) {
-            if (((UserDatabase)newUserDatabase).getRedisDatabaseMap() != null) {
-                ((UserDatabase)newUserDatabase).getRedisDatabaseMap().put(name,redisDatabase);
-                return;
+            UserDatabase userSql = (UserDatabase) newUserDatabase;
+            if (userSql.getRedisDatabaseMap() == null) {
+                Map<String, RedisDatabase> databaseMap = new HashMap<>();
+                userSql.setRedisDatabaseMap(databaseMap);
             }
+            userSql.getRedisDatabaseMap().put(name,redisDatabase);
+            session.setAttribute("userDatabase"+id,userSql);
+            return;
         }
         UserDatabase userDatabase = new UserDatabase();
+        User user = (User) session.getAttribute("user" + id);
+        if (user == null) {
+            user = dao.get(Integer.parseInt(id));
+            session.setAttribute("user"+id,user);
+        }
         // 设置user属性
-        userDatabase.setUser((User) session.getAttribute("user"));
+        userDatabase.setUser(user);
         // 创建map
         Map<String, RedisDatabase> map = new HashMap<>();
         // 设置database的name
         map.put(name,redisDatabase);
         userDatabase.setRedisDatabaseMap(map);
-        session.setAttribute("userDatabase", userDatabase);
+        session.setAttribute("userDatabase"+id, userDatabase);
     }
 
     @Override
@@ -55,8 +70,9 @@ public class RedisServiceImpl implements RedisService {
         // 获取数据库名称
         String databaseName = request.getParameter("name");
         // 删除该数据库
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
         userDatabase.getRedisDatabaseMap().remove(databaseName);
+        request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
     }
 
     @Override
@@ -68,7 +84,7 @@ public class RedisServiceImpl implements RedisService {
             return;
         }
         newName = newName.toLowerCase();
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
         // 获取databaseMap
         Map<String, RedisDatabase> databaseMap = userDatabase.getRedisDatabaseMap();
         // 获取旧数据库
@@ -77,6 +93,7 @@ public class RedisServiceImpl implements RedisService {
         databaseMap.remove(oldName);
         // 将新的数据库名称添加进去
         databaseMap.put(newName,database);
+        request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
     }
 
     @Override
@@ -89,7 +106,7 @@ public class RedisServiceImpl implements RedisService {
                     databseName = cookie.getValue();
                 }
             }
-            UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+            UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
             Map<String, RedisDatabase> redisDatabaseMap = userDatabase.getRedisDatabaseMap();
             // 获取命令
             String command = request.getParameter("redisCommand");
@@ -113,6 +130,7 @@ public class RedisServiceImpl implements RedisService {
                 }
                 // 存入数据中
                 data.put(key,value);
+                request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
                 return new ResultInfo(true,null,null);
             }
             // 若不存在数据，则删除和取出操作不能进行
@@ -126,6 +144,7 @@ public class RedisServiceImpl implements RedisService {
                 for (String key : keys) {
                     data.remove(key);
                 }
+                request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
                 return new ResultInfo(true,null,null);
             }
             if (command.startsWith("get")) {
@@ -135,8 +154,10 @@ public class RedisServiceImpl implements RedisService {
                 if (value != null && value.length() > 0) {
                     Map<String, String> map = new HashMap<>();
                     map.put(key,value);
+                    request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
                     return new ResultInfo(true,null,map);
                 }
+                request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
                 return new ResultInfo(false,null,null);
             }
         } catch (Exception e) {

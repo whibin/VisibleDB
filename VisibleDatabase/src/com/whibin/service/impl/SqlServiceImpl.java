@@ -1,5 +1,7 @@
 package com.whibin.service.impl;
 
+import com.whibin.dao.UserDao;
+import com.whibin.dao.impl.UserDaoImpl;
 import com.whibin.domain.SqlType;
 import com.whibin.domain.po.User;
 import com.whibin.domain.vo.Database;
@@ -7,6 +9,7 @@ import com.whibin.domain.vo.ResultInfo;
 import com.whibin.domain.vo.Table;
 import com.whibin.domain.vo.UserDatabase;
 import com.whibin.service.SqlService;
+import com.whibin.util.GetUserId;
 import com.whibin.util.SqlParser;
 import net.sf.jsqlparser.JSQLParserException;
 
@@ -22,6 +25,8 @@ import java.util.*;
  */
 
 public class SqlServiceImpl implements SqlService {
+    private UserDao dao = new UserDaoImpl();
+
     @Override
     public void createDatabase(HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -33,29 +38,39 @@ public class SqlServiceImpl implements SqlService {
         name = name.toLowerCase();
         // 创建database对象
         Database database = new Database();
+        String id = GetUserId.getUserId(request);
         // 在session中获取userDatabase，若为空则新建一个
-        Object newUserSql = session.getAttribute("userDatabase");
+        Object newUserSql = session.getAttribute("userDatabase"+id);
         if (newUserSql != null) {
-            if (((UserDatabase)newUserSql).getDatabaseMap() != null) {
-                ((UserDatabase)newUserSql).getDatabaseMap().put(name,database);
-                return;
+            UserDatabase userSql = (UserDatabase) newUserSql;
+            if (userSql.getDatabaseMap() == null) {
+                Map<String, Database> databaseMap = new HashMap<>();
+                userSql.setDatabaseMap(databaseMap);
             }
+            userSql.getDatabaseMap().put(name,database);
+            session.setAttribute("userDatabase"+id,userSql);
+            return;
         }
         UserDatabase userDatabase = new UserDatabase();
+        User user = (User) session.getAttribute("user"+id);
+        if (user == null) {
+            user = dao.get(Integer.parseInt(id));
+            session.setAttribute("user"+id,user);
+        }
         // 设置user属性
-        userDatabase.setUser((User) session.getAttribute("user"));
+        userDatabase.setUser(user);
         // 创建map
         Map<String, Database> databaseMap = new HashMap<>();
         // 设置database的name
         databaseMap.put(name,database);
         userDatabase.setDatabaseMap(databaseMap);
-        session.setAttribute("userDatabase", userDatabase);
+        session.setAttribute("userDatabase"+id, userDatabase);
     }
 
     @Override
     public void createTable(HttpServletRequest request) {
         // 获取userSql
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
         Database database = userDatabase.getDatabaseMap().get(request.getParameter("databaseName"));
         Map<String, Table> tableMap = database.getTableMap();
         if (tableMap == null) {
@@ -63,6 +78,7 @@ public class SqlServiceImpl implements SqlService {
             database.setTableMap(tableMap);
         }
         newTable(tableMap,request);
+        request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
     }
 
     @Override
@@ -70,8 +86,9 @@ public class SqlServiceImpl implements SqlService {
         // 获取数据库名称
         String databaseName = request.getParameter("name");
         // 删除该数据库
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
         userDatabase.getDatabaseMap().remove(databaseName);
+        request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
     }
 
     @Override
@@ -79,9 +96,10 @@ public class SqlServiceImpl implements SqlService {
         // 获取数据库和表名
         String tableName = request.getParameter("tableName");
         String databaseName = request.getParameter("databaseName");
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
         // 删除表
         userDatabase.getDatabaseMap().get(databaseName).getTableMap().remove(tableName);
+        request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
     }
 
     @Override
@@ -93,7 +111,7 @@ public class SqlServiceImpl implements SqlService {
             return;
         }
         newName = newName.toLowerCase();
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
         // 获取databaseMap
         Map<String, Database> databaseMap = userDatabase.getDatabaseMap();
         // 获取旧数据库
@@ -102,21 +120,23 @@ public class SqlServiceImpl implements SqlService {
         databaseMap.remove(oldName);
         // 将新的数据库名称添加进去
         databaseMap.put(newName,database);
+        request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
     }
 
     @Override
     public void updateTable(HttpServletRequest request) {
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
         Database database = userDatabase.getDatabaseMap().get(request.getParameter("databaseName"));
         Map<String, Table> tableMap = database.getTableMap();
         String oldTableName = request.getParameter("oldTableName");
         tableMap.remove(oldTableName);
         newTable(tableMap,request);
+        request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
     }
 
     @Override
     public void addData(HttpServletRequest request) {
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
         String databaseName = null;
         String tableName = null;
         for (Cookie cookie : request.getCookies()) {
@@ -132,22 +152,24 @@ public class SqlServiceImpl implements SqlService {
         Table table = userDatabase.getDatabaseMap().get(databaseName).getTableMap().get(tableName);
         String[] data = request.getParameterMap().get("data");
         addData(table,data);
+        request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
     }
 
     @Override
     public void deleteData(HttpServletRequest request) {
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
         Table table = userDatabase.getDatabaseMap().get(request.getParameter("databaseName"))
                 .getTableMap().get(request.getParameter("tableName"));
         String id = request.getParameter("id");
         // 传入表和数据所在的id（即行数）
         deleteData(table,id);
+        request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
     }
 
     @Override
     public void updateData(HttpServletRequest request) {
         // 先删除
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
         Table table = userDatabase.getDatabaseMap().get(request.getParameter("databaseName"))
                 .getTableMap().get(request.getParameter("tableName"));
         String id = request.getParameter("id");
@@ -166,11 +188,12 @@ public class SqlServiceImpl implements SqlService {
         }
         addData(table, (String[]) newData.toArray(new String[newData.size()]));
         System.out.println(newData);
+        request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
     }
 
     @Override
     public Object parseSql(HttpServletRequest request) {
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
         String databaseName = null;
         for (Cookie cookie : request.getCookies()) {
             if ("databaseName".equals(cookie.getName())) {
@@ -196,16 +219,19 @@ public class SqlServiceImpl implements SqlService {
             case DELETE:
                 if (deleteDataWithSql(database,sql)) {
                     // 删除成功
+                    request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
                     return new ResultInfo(true,null,null);
                 }
                 return new ResultInfo(false,"Delete failed! Please check your sql syntax!",null);
             case UPDATE:
                 if (updateDataWithSql(database,sql)) {
+                    request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
                     return new ResultInfo(true,null,null);
                 }
                 return new ResultInfo(false,"Update failed! Please check your sql syntax!",null);
             case INSERT:
                 if (insertDataWithSql(database,sql)) {
+                    request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
                     return new ResultInfo(true,null,null);
                 }
                 return new ResultInfo(false,"Insert failed! Please check your sql syntax!",null);
@@ -266,6 +292,7 @@ public class SqlServiceImpl implements SqlService {
         Map<String, List<String>> tableData = table.getData();
         // 判断tableData是否存在，若不存在则新建
         newTableDataWhenNull(table);
+        tableData = table.getData();
         // 若存在，则直接操作
         int i = 0;
         for (Map.Entry<String, String> entry : table.getFieldType().entrySet()) {

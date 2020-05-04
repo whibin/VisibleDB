@@ -2,6 +2,7 @@ package com.whibin.domain.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -10,6 +11,6 @@ import java.util.Map;
  * @Description: redis数据库的实体类
  */
 @Data
-public class RedisDatabase {
+public class RedisDatabase implements Serializable {
     private Map<String, String> data;
 }

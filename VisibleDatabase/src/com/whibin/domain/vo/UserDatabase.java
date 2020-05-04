@@ -1,8 +1,10 @@
 package com.whibin.domain.vo;
 
+import com.whibin.domain.AuthorityType;
 import com.whibin.domain.po.User;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +15,9 @@ import java.util.Map;
  * @Description: 用于绑定user信息和其数据库信息
  */
 @Data
-public class UserDatabase {
+public class UserDatabase implements Serializable {
     private User user;
     private Map<String, Database> databaseMap;
     private Map<String, RedisDatabase> redisDatabaseMap;
+    private Map<User, AuthorityType> authority;
 }

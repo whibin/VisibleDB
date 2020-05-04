@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.Serializable;
 
 /**
  * @author whibin
@@ -11,7 +12,7 @@ import java.io.InputStream;
  * @Description: 用户的实体类
  */
 @Data
-public class User {
+public class User implements Serializable {
     private Long id;
     private String username;
     private String password;

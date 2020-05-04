@@ -6,6 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script src="js/UpdateCode.js"></script>
     <script src="js/jquery-3.5.0.js"></script>
+    <script src="js/jquery.form.js"></script>
     <style>
         body {
             padding:0;
@@ -122,12 +123,39 @@
             font-size: larger;
         }
     </style>
+    <script !src="">
+        function setCookie(name, value) {
+            document.cookie = name + "=" + escape(value);
+        }
+        $(function () {
+            var options = {
+                success: jump,
+                url: "userServlet/login",
+                dataType: "json",
+                resetForm: true
+            }
+            function jump(resultInfo) {
+                if (resultInfo.status) {
+                    setCookie("userId",resultInfo.data);
+                    if (resultInfo.message == "admin") {
+                        location.href = "${pageContext.request.contextPath}/admin.html"
+                    } else {
+                        location.href = "${pageContext.request.contextPath}/sql.html"
+                    }
+                } else {
+                    location.href = "${pageContext.request.contextPath}/index.jsp"
+                }
+            }
+            $("#form").ajaxForm(options);
+        })
+        setCookie("userId",${user.id});
+    </script>
 </head>
 
 <body>
 <div id="login">
     <h1>Sign in</h1>
-    <form action="${pageContext.request.contextPath}/userServlet/login" method="post">
+    <form method="post" id="form">
         <span>${sessionScope.message}</span>
         <input type="text" required placeholder="Username" name="username"/>
         <input type="password" required placeholder="Password" name="password"/>

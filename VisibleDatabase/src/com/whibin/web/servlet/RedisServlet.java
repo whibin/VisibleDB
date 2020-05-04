@@ -3,6 +3,7 @@ package com.whibin.web.servlet;
 import com.whibin.domain.vo.UserDatabase;
 import com.whibin.service.RedisService;
 import com.whibin.service.impl.RedisServiceImpl;
+import com.whibin.util.GetUserId;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class RedisServlet extends BaseServlet {
      * @return
      */
     public Object getDatabase(HttpServletRequest request, HttpServletResponse response) {
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+ GetUserId.getUserId(request));
         if (userDatabase == null) {
             return null;
         }

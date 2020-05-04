@@ -4,18 +4,12 @@ import com.whibin.domain.po.User;
 import com.whibin.domain.vo.ResultInfo;
 import com.whibin.service.UserService;
 import com.whibin.service.impl.UserServiceImpl;
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author whibin
@@ -32,17 +26,16 @@ public class UserServlet extends BaseServlet {
      * @param response
      * @return
      */
-    public void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public Object login(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // 获取参数
-        if (service.login(request)) {
+        if (service.login(request, response)) {
+            String id = String.valueOf(((User) request.getSession().getAttribute("user")).getId());
             if ("whibin".equals(((User) request.getSession().getAttribute("user")).getUsername())) {
-                response.sendRedirect(request.getContextPath() + "/admin.html");
-                return;
+                return new ResultInfo(true,"admin",id);
             }
-            response.sendRedirect(request.getContextPath() + "/sql.html");
-            return;
+            return new ResultInfo(true,null,id);
         }
-        response.sendRedirect(request.getContextPath() + "/index.jsp");
+        return new ResultInfo(false,null,null);
     }
 
     /**
@@ -82,7 +75,7 @@ public class UserServlet extends BaseServlet {
      * @return
      */
     public Object information(HttpServletRequest request, HttpServletResponse response) {
-        return new ResultInfo(true, null,request.getSession().getAttribute("user"));
+        return new ResultInfo(true, null,service.getInformation(request));
     }
 
     public void updateInformation(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, FileUploadException, IOException, NoSuchFieldException {
