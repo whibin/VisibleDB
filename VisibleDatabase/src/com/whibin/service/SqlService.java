@@ -1,6 +1,5 @@
 package com.whibin.service;
 
-import com.whibin.domain.vo.UserSql;
 import net.sf.jsqlparser.JSQLParserException;
 
 import javax.servlet.http.HttpServletRequest;

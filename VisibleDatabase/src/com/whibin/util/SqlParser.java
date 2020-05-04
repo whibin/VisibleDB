@@ -150,7 +150,12 @@ public class SqlParser {
     private static List<String> getInsertFields(String sql) throws JSQLParserException {
         Insert stmt = (Insert) CCJSqlParserUtil.parse(sql);
         List<String> fields = new ArrayList<>();
-        for (Column column : stmt.getColumns()) {
+        List<Column> columns = stmt.getColumns();
+        // 如果为null，说明没有指定字段
+        if (columns == null) {
+            return null;
+        }
+        for (Column column : columns) {
             fields.add(column.getColumnName());
         }
         return fields;
@@ -159,6 +164,9 @@ public class SqlParser {
     private static String getSelectWhere(String sql) throws JSQLParserException {
         Select stmt = (Select) CCJSqlParserUtil.parse(sql);
         Expression where = ((PlainSelect) stmt.getSelectBody()).getWhere();
+        if (where == null) {
+            return null;
+        }
         return where.toString();
     }
 

@@ -54,11 +54,12 @@ public class JsqlParserTest {
         }
 
         System.out.println(fields);
+        System.out.println(stmt.getWhere());
     }
 
     @Test
     public void test3() throws JSQLParserException {
-        Insert stmt = (Insert) CCJSqlParserUtil.parse("insert into user(id,username,password) values(?,?,?)");
+        Insert stmt = (Insert) CCJSqlParserUtil.parse("insert into user values(?,?,?)");
         List<Column> columns = stmt.getColumns();
         ItemsList list = stmt.getItemsList();
         System.out.println(list);

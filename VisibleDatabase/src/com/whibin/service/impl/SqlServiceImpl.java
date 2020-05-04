@@ -1,10 +1,11 @@
 package com.whibin.service.impl;
 
+import com.whibin.domain.SqlType;
 import com.whibin.domain.po.User;
 import com.whibin.domain.vo.Database;
 import com.whibin.domain.vo.ResultInfo;
 import com.whibin.domain.vo.Table;
-import com.whibin.domain.vo.UserSql;
+import com.whibin.domain.vo.UserDatabase;
 import com.whibin.service.SqlService;
 import com.whibin.util.SqlParser;
 import net.sf.jsqlparser.JSQLParserException;
@@ -32,27 +33,30 @@ public class SqlServiceImpl implements SqlService {
         name = name.toLowerCase();
         // 创建database对象
         Database database = new Database();
-        Object newUserSql = session.getAttribute("userSql");
+        // 在session中获取userDatabase，若为空则新建一个
+        Object newUserSql = session.getAttribute("userDatabase");
         if (newUserSql != null) {
-            ((UserSql)newUserSql).getDatabaseMap().put(name,database);
-            return;
+            if (((UserDatabase)newUserSql).getDatabaseMap() != null) {
+                ((UserDatabase)newUserSql).getDatabaseMap().put(name,database);
+                return;
+            }
         }
-        UserSql userSql = new UserSql();
+        UserDatabase userDatabase = new UserDatabase();
         // 设置user属性
-        userSql.setUser((User) session.getAttribute("user"));
+        userDatabase.setUser((User) session.getAttribute("user"));
         // 创建map
         Map<String, Database> databaseMap = new HashMap<>();
         // 设置database的name
         databaseMap.put(name,database);
-        userSql.setDatabaseMap(databaseMap);
-        session.setAttribute("userSql",userSql);
+        userDatabase.setDatabaseMap(databaseMap);
+        session.setAttribute("userDatabase", userDatabase);
     }
 
     @Override
     public void createTable(HttpServletRequest request) {
         // 获取userSql
-        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
-        Database database = userSql.getDatabaseMap().get(request.getParameter("databaseName"));
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        Database database = userDatabase.getDatabaseMap().get(request.getParameter("databaseName"));
         Map<String, Table> tableMap = database.getTableMap();
         if (tableMap == null) {
             tableMap = new HashMap<>();
@@ -66,8 +70,8 @@ public class SqlServiceImpl implements SqlService {
         // 获取数据库名称
         String databaseName = request.getParameter("name");
         // 删除该数据库
-        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
-        userSql.getDatabaseMap().remove(databaseName);
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        userDatabase.getDatabaseMap().remove(databaseName);
     }
 
     @Override
@@ -75,9 +79,9 @@ public class SqlServiceImpl implements SqlService {
         // 获取数据库和表名
         String tableName = request.getParameter("tableName");
         String databaseName = request.getParameter("databaseName");
-        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
         // 删除表
-        userSql.getDatabaseMap().get(databaseName).getTableMap().remove(tableName);
+        userDatabase.getDatabaseMap().get(databaseName).getTableMap().remove(tableName);
     }
 
     @Override
@@ -89,9 +93,9 @@ public class SqlServiceImpl implements SqlService {
             return;
         }
         newName = newName.toLowerCase();
-        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
         // 获取databaseMap
-        Map<String, Database> databaseMap = userSql.getDatabaseMap();
+        Map<String, Database> databaseMap = userDatabase.getDatabaseMap();
         // 获取旧数据库
         Database database = databaseMap.get(oldName);
         // 将旧数据库名称从databaseMap删除
@@ -102,8 +106,8 @@ public class SqlServiceImpl implements SqlService {
 
     @Override
     public void updateTable(HttpServletRequest request) {
-        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
-        Database database = userSql.getDatabaseMap().get(request.getParameter("databaseName"));
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        Database database = userDatabase.getDatabaseMap().get(request.getParameter("databaseName"));
         Map<String, Table> tableMap = database.getTableMap();
         String oldTableName = request.getParameter("oldTableName");
         tableMap.remove(oldTableName);
@@ -112,7 +116,7 @@ public class SqlServiceImpl implements SqlService {
 
     @Override
     public void addData(HttpServletRequest request) {
-        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
         String databaseName = null;
         String tableName = null;
         for (Cookie cookie : request.getCookies()) {
@@ -125,15 +129,15 @@ public class SqlServiceImpl implements SqlService {
                 System.out.println(tableName);
             }
         }
-        Table table = userSql.getDatabaseMap().get(databaseName).getTableMap().get(tableName);
+        Table table = userDatabase.getDatabaseMap().get(databaseName).getTableMap().get(tableName);
         String[] data = request.getParameterMap().get("data");
         addData(table,data);
     }
 
     @Override
     public void deleteData(HttpServletRequest request) {
-        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
-        Table table = userSql.getDatabaseMap().get(request.getParameter("databaseName"))
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        Table table = userDatabase.getDatabaseMap().get(request.getParameter("databaseName"))
                 .getTableMap().get(request.getParameter("tableName"));
         String id = request.getParameter("id");
         // 传入表和数据所在的id（即行数）
@@ -143,8 +147,8 @@ public class SqlServiceImpl implements SqlService {
     @Override
     public void updateData(HttpServletRequest request) {
         // 先删除
-        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
-        Table table = userSql.getDatabaseMap().get(request.getParameter("databaseName"))
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
+        Table table = userDatabase.getDatabaseMap().get(request.getParameter("databaseName"))
                 .getTableMap().get(request.getParameter("tableName"));
         String id = request.getParameter("id");
         deleteData(table,id);
@@ -165,19 +169,30 @@ public class SqlServiceImpl implements SqlService {
     }
 
     @Override
-    public Object parseSql(HttpServletRequest request) throws JSQLParserException {
-        UserSql userSql = (UserSql) request.getSession().getAttribute("userSql");
+    public Object parseSql(HttpServletRequest request) {
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase");
         String databaseName = null;
         for (Cookie cookie : request.getCookies()) {
             if ("databaseName".equals(cookie.getName())) {
                 databaseName = cookie.getValue();
             }
         }
-        Database database = userSql.getDatabaseMap().get(databaseName);
+        Database database = userDatabase.getDatabaseMap().get(databaseName);
         String sql = request.getParameter("sql");
+        // 获取sql类型
+        SqlType sqlType = SqlParser.getSqlType(sql);
+        // 若为null，说明语法错误
+        if (sqlType == null) {
+            return new ResultInfo(false,"Please check your sql syntax!",null);
+        }
         // 判断sql类型
-        switch (SqlParser.getSqlType(sql)) {
+        switch (sqlType) {
             case SELECT:
+                Map<String, List<String>> resultSet = selectDataWithSql(database, sql);
+                if (resultSet == null) {
+                    return new ResultInfo(false,"Select failed! Please check your sql syntax!",null);
+                }
+                return new ResultInfo(true,null,resultSet);
             case DELETE:
                 if (deleteDataWithSql(database,sql)) {
                     // 删除成功
@@ -266,6 +281,10 @@ public class SqlServiceImpl implements SqlService {
      * @return
      */
     private List<String> getDataId(String condition, Table table) {
+        // 如果没有条件，说明是操作所有数据
+        if (condition == null) {
+            return null;
+        }
         // 把空格去掉
         condition = condition.replaceAll(" ","");
         // 根据 = 来取出键和值
@@ -300,7 +319,7 @@ public class SqlServiceImpl implements SqlService {
             Table table = database.getTableMap().get(tableName);
             List<String> list = getDataId(SqlParser.getWhere(sql), table);
             // 如果没有条件，则说明是全部删除
-            if (list.size() <= 0) {
+            if (list == null || list.size() <= 0) {
                 database.getTableMap().remove(tableName);
                 return true;
             }
@@ -308,7 +327,7 @@ public class SqlServiceImpl implements SqlService {
             for (String id : list) {
                 deleteData(table,id);
             }
-        } catch (JSQLParserException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -333,9 +352,18 @@ public class SqlServiceImpl implements SqlService {
             Table table = database.getTableMap().get(SqlParser.getTableName(sql));
             Map<String, List<String>> data = table.getData();
             // 获取id，来修改对应的值
-            String id = getDataId(SqlParser.getWhere(sql), table).get(0);
-            updateDataWithSql(sql,data,id);
-        } catch (JSQLParserException e) {
+            List<String> id = getDataId(SqlParser.getWhere(sql), table);
+            // 若没有条件，说明是修改全部
+            if (id == null || id.size() <= 0) {
+                id = new ArrayList<>();
+                for (int i = 0; i < getDataSize(data); i++) {
+                    id.add(String.valueOf(i));
+                }
+            }
+            for (String s : id) {
+                updateDataWithSql(sql,data,s);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -352,6 +380,10 @@ public class SqlServiceImpl implements SqlService {
         Table table = null;
         try {
             table = database.getTableMap().get(SqlParser.getTableName(sql));
+            // 若获取不到表，说明sql语句有误
+            if (table == null) {
+                return false;
+            }
             String id = null;
             // 先判断表中是否有数据
             newTableDataWhenNull(table);
@@ -362,7 +394,7 @@ public class SqlServiceImpl implements SqlService {
             }
             // 进行修改
             updateDataWithSql(sql,table.getData(),id);
-        } catch (JSQLParserException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -379,6 +411,10 @@ public class SqlServiceImpl implements SqlService {
     private void updateDataWithSql(String sql, Map<String, List<String>> data, String id) throws JSQLParserException {
         // 获取sql语句中的字段名
         List<String> fields = SqlParser.getFields(sql);
+        // 如果获取不到字段名，说明是对所有字段数据进行插入
+        if (fields == null) {
+            fields = new ArrayList<>(data.keySet());
+        }
         // 获取sql语句对应的字段值
         List<String> fieldValue = SqlParser.getFieldValue(sql);
         for (int i = 0; i < fields.size(); i++) {
@@ -405,5 +441,60 @@ public class SqlServiceImpl implements SqlService {
             }
             table.setData(tableData);
         }
+    }
+
+    /**
+     * 查询数据
+     * @param database
+     * @param sql
+     * @return
+     */
+    private Map<String, List<String>> selectDataWithSql(Database database, String sql) {
+        try {
+            // 获取表
+            Table table = database.getTableMap().get(SqlParser.getTableName(sql));
+            // 获取要查询的字段
+            List<String> fields = SqlParser.getFields(sql);
+            newTableDataWhenNull(table);
+            // 如果为空，说明是查询所有字段
+            if (fields == null || fields.size() <= 0) {
+                fields = new ArrayList<>(table.getData().keySet());
+            }
+            // 获取要查询的行的id
+            String where = SqlParser.getWhere(sql);
+            List<String> dataId = getDataId(where, table);
+            if (dataId == null || dataId.size() <= 0) {
+                dataId = new ArrayList<>();
+                for (int i = 0; i < getDataSize(table.getData()); i++) {
+                    dataId.add(String.valueOf(i));
+                }
+            }
+            Map<String, List<String>> data = table.getData();
+            // 取出结果集
+            Map<String, List<String>> resultSet = new HashMap<>();
+            for (String field : fields) {
+                List<String> result = new ArrayList<>();
+                for (String id : dataId) {
+                    result.add(data.get(field).get(Integer.parseInt(id)));
+                }
+                resultSet.put(field,result);
+            }
+            return resultSet;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 获取字段数据的长度
+     * @param data
+     * @return
+     */
+    private Integer getDataSize(Map<String, List<String>> data) {
+        for (Map.Entry<String, List<String>> entry : data.entrySet()) {
+            return entry.getValue().size();
+        }
+        return null;
     }
 }

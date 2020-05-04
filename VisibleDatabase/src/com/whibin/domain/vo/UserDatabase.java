@@ -13,7 +13,8 @@ import java.util.Map;
  * @Description: 用于绑定user信息和其数据库信息
  */
 @Data
-public class UserSql {
+public class UserDatabase {
     private User user;
     private Map<String, Database> databaseMap;
+    private Map<String, RedisDatabase> redisDatabaseMap;
 }
