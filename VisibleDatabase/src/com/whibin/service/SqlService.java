@@ -69,6 +69,7 @@ public interface SqlService {
      * 解析sql语句
      * @param request
      * @return
+     * @throws JSQLParserException
      */
     Object parseSql(HttpServletRequest request) throws JSQLParserException;
 }

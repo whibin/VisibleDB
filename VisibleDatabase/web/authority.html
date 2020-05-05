@@ -18,6 +18,99 @@
             margin-left: 10px;
         }
     </style>
+    <script !src="">
+        $(function () {
+            $.get(
+                "authorityServlet/getSentRequest",
+                {},
+                function (list) {
+                    for (let i = 0; i < list.length; i++) {
+                        $("#request").append("<tr></tr>");
+                        let t = i + 1;
+                        $("tr:eq("+t+")").append("<td>"+list[i].user.username+"</td>").append("<td><button type=\"button\" class=\"btn btn-primary\" id=\"agree\">Agree</button><button type=\"button\" class=\"btn btn-warning\" id=\"reject\">Reject</button></td>")
+                        $("#agree").click(function () {
+                            $.get(
+                                "authorityServlet/allowRequest",
+                                {iId: list[i].user.id},
+                                function () {
+                                    location.href = "authority.html";
+                                }
+                            )
+                        });
+                        $("#reject").click(function () {
+                            $.get(
+                                "authorityServlet/rejectRequest",
+                                {iId: list[i].user.id},
+                                function () {
+                                    location.href = "authority.html";
+                                }
+                            )
+                        })
+                    }
+                }
+            )
+            $.get(
+                "authorityServlet/getAuthority",
+                {},
+                function (authorityMap) {
+                    for (let x in authorityMap) {
+                        $("#authority").append("<tr></tr>");
+                        $("tr:last").append("<td>"+x+"</td>").append("<td>"+authorityMap[x]+"</td>").append("<td>\n" +
+                            "                    <button type=\"button\" class=\"btn btn-default\" id=\"readonly\">Update to Read Only</button>\n" +
+                            "                    <button type=\"button\" class=\"btn btn-default\" id=\"writeonly\">Update to Write Only</button>\n" +
+                            "                    <button type=\"button\" class=\"btn btn-primary\" id=\"all\">Update to Write and Read</button>\n" +
+                            "                    <button type=\"button\" class=\"btn btn-warning\" id=\"delete\">Delete</button>\n" +
+                            "                </td>")
+                        $("#readonly").click(function () {
+                            $.get(
+                                "authorityServlet/updateAuthority",
+                                {
+                                    username:x,
+                                    newA: "READ ONLY"
+                                },
+                                function () {
+                                    location.href = "authority.html";
+                                }
+                            )
+                        })
+                        $("#writeonly").click(function () {
+                            $.get(
+                                "authorityServlet/updateAuthority",
+                                {
+                                    username:x,
+                                    newA: "WRITE ONLY"
+                                },
+                                function () {
+                                    location.href = "authority.html";
+                                }
+                            )
+                        })
+                        $("#all").click(function () {
+                            $.get(
+                                "authorityServlet/updateAuthority",
+                                {
+                                    username:x,
+                                    newA: "WRITE AND READ"
+                                },
+                                function () {
+                                    location.href = "authority.html";
+                                }
+                            )
+                        })
+                        $("#delete").click(function () {
+                            $.get(
+                                "authorityServlet/removeAuthority",
+                                {username: x},
+                                function () {
+                                    location.href = "authority.html";
+                                }
+                            )
+                        })
+                    }
+                }
+            )
+        })
+    </script>
 </head>
 <body>
 <!-- 导航条 -->
@@ -53,31 +146,18 @@
 </div>
     <div class="container">
         <h1>User requests</h1>
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover" id="request">
             <tr>
                 <th>User</th>
                 <th>Operation</th>
-            </tr>
-            <tr>
-                <td></td>
-                <td><button type="button" class="btn btn-primary" id="agree">Agree</button>
-                    <button type="button" class="btn btn-warning" id="reject">Reject</button></td>
             </tr>
         </table>
         <h1>Command authorities</h1>
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover" id="authority">
             <tr>
                 <th>User</th>
+                <th>Authority</th>
                 <th>Operation</th>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <button type="button" class="btn btn-default" id="readonly">Update to Read Only</button>
-                    <button type="button" class="btn btn-default" id="writeonly">Update to Write Only</button>
-                    <button type="button" class="btn btn-primary" id="all">Update to Write and Read</button>
-                    <button type="button" class="btn btn-warning" id="delete">Delete</button>
-                </td>
             </tr>
         </table>
     </div>

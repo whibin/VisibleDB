@@ -63,16 +63,18 @@ public class UserDatabaseListener implements ServletContextListener,
     // -------------------------------------------------------
     // HttpSessionListener implementation
     // -------------------------------------------------------
+    @SneakyThrows
     @Override
     public void sessionCreated(HttpSessionEvent se) {
         /* Session is created. */
         System.out.println("Session was created");
         HttpSession session = se.getSession();
         // 将文件数据添加到session中
-        for (UserDatabase userDatabase : userDatabases) {
+        List<UserDatabase> temp = new ArrayList<>(userDatabases);
+        for (UserDatabase userDatabase : temp) {
             session.setAttribute("userDatabase"+userDatabase.getUser().getId(),userDatabase);
         }
-        System.out.println(userDatabases);
+        System.out.println(temp);
     }
 
     @Override

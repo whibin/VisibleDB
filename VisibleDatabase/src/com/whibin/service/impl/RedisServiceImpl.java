@@ -7,6 +7,7 @@ import com.whibin.domain.vo.Database;
 import com.whibin.domain.vo.RedisDatabase;
 import com.whibin.domain.vo.ResultInfo;
 import com.whibin.domain.vo.UserDatabase;
+import com.whibin.service.DatabaseCommonService;
 import com.whibin.service.RedisService;
 import com.whibin.util.GetUserId;
 
@@ -24,6 +25,7 @@ import java.util.Map;
 
 public class RedisServiceImpl implements RedisService {
     private UserDao dao = new UserDaoImpl();
+    private DatabaseCommonService commonService = new DatabaseCommonServiceImpl();
 
     @Override
     public void createDatabase(HttpServletRequest request) {
@@ -49,14 +51,7 @@ public class RedisServiceImpl implements RedisService {
             session.setAttribute("userDatabase"+id,userSql);
             return;
         }
-        UserDatabase userDatabase = new UserDatabase();
-        User user = (User) session.getAttribute("user" + id);
-        if (user == null) {
-            user = dao.get(Integer.parseInt(id));
-            session.setAttribute("user"+id,user);
-        }
-        // 设置user属性
-        userDatabase.setUser(user);
+        UserDatabase userDatabase = commonService.newUserDatabaseAndSetUser(session, dao, id);
         // 创建map
         Map<String, RedisDatabase> map = new HashMap<>();
         // 设置database的name
@@ -98,72 +93,6 @@ public class RedisServiceImpl implements RedisService {
 
     @Override
     public Object parseCommand(HttpServletRequest request) {
-        try {
-            String databseName = null;
-            // 获取数据库名
-            for (Cookie cookie : request.getCookies()) {
-                if ("databaseName".equals(cookie.getName())) {
-                    databseName = cookie.getValue();
-                }
-            }
-            UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
-            Map<String, RedisDatabase> redisDatabaseMap = userDatabase.getRedisDatabaseMap();
-            // 获取命令
-            String command = request.getParameter("redisCommand");
-            if (command == null || command.length() <= 0) {
-                return new ResultInfo(false,"Please check the syntax!",null);
-            }
-            Map<String, String> data = redisDatabaseMap.get(databseName).getData();
-            // 对语句进行预处理
-            command = command.trim().toLowerCase();
-            // 判断语句的类型
-            if (command.startsWith("set")) {
-                // 存放操作
-                // 获取键
-                String key = command.substring(command.indexOf(" ") + 1, command.lastIndexOf(" "));
-                // 获取值
-                String value = command.substring(command.lastIndexOf(" ") + 1);
-                // 若没有数据，则新建一个数据map
-                if (data == null) {
-                    data = new HashMap<>();
-                    redisDatabaseMap.get(databseName).setData(data);
-                }
-                // 存入数据中
-                data.put(key,value);
-                request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
-                return new ResultInfo(true,null,null);
-            }
-            // 若不存在数据，则删除和取出操作不能进行
-            if (data == null) {
-                return new ResultInfo(false,null,null);
-            }
-            if (command.startsWith("del")) {
-                // 删除操作
-                String[] keys = command.substring(command.indexOf(" ") + 1).split(" ");
-                // 遍历删除
-                for (String key : keys) {
-                    data.remove(key);
-                }
-                request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
-                return new ResultInfo(true,null,null);
-            }
-            if (command.startsWith("get")) {
-                // 取出操作
-                String key = command.substring(command.indexOf(" ") + 1);
-                String value = data.get(key);
-                if (value != null && value.length() > 0) {
-                    Map<String, String> map = new HashMap<>();
-                    map.put(key,value);
-                    request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
-                    return new ResultInfo(true,null,map);
-                }
-                request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
-                return new ResultInfo(false,null,null);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResultInfo(false,"Please check the syntax",null);
-        }
-        return new ResultInfo(false,"Please check the syntax",null);
+        return commonService.parseCommand(request,GetUserId.getUserId(request));
     }
 }

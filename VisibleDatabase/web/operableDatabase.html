@@ -18,6 +18,32 @@
             margin-left: 10px;
         }
     </style>
+    <script !src="">
+        $(function () {
+            function setCookie(name, value) {
+                document.cookie = name + "=" + escape(value);
+            }
+            $.get(
+                "authorityServlet/getOperableDatabase",
+                {},
+                function (list) {
+                    for (let i = 0; i < list.length; i++) {
+                        $("#ope").append("<tr></tr>");
+                        $("tr:last").append("<td>"+list[i].user.username+"</td>").append("<td><button type=\"button\" class=\"btn btn-primary\" id=\"sql\">Enter sql Database</button>\n" +
+                            "                <button type=\"button\" class=\"btn btn-primary\" id=\"redis\">Enter redis Database</button></td>");
+                        $("#sql").click(function () {
+                            setCookie("OtherUserId",list[i].user.id);
+                            location.href = "sqlOther.html";
+                        })
+                        $("#redis").click(function () {
+                            setCookie("OtherUserId",list[i].user.id);
+                            location.href = "redisOther.html";
+                        })
+                    }
+                }
+            )
+        })
+    </script>
 </head>
 <body>
 <!-- 导航条 -->
@@ -53,15 +79,10 @@
 </div>
 <div class="container">
     <h1>Operable Databases</h1>
-    <table class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover" id="ope">
         <tr>
             <th>User</th>
             <th>Operation</th>
-        </tr>
-        <tr>
-            <td></td>
-            <td><button type="button" class="btn btn-primary" id="sql">Enter sql Database</button>
-                <button type="button" class="btn btn-primary" id="redis">Enter redis Database</button></td>
         </tr>
     </table>
 </div>

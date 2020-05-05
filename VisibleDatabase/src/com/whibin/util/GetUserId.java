@@ -18,4 +18,13 @@ public class GetUserId {
         }
         return null;
     }
+
+    public static String getOtherUserId(HttpServletRequest request) {
+        for (Cookie cookie : request.getCookies()) {
+            if ("OtherUserId".equals(cookie.getName())) {
+                return cookie.getValue();
+            }
+        }
+        return null;
+    }
 }
