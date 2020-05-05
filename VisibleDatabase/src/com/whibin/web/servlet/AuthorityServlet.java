@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -153,6 +155,10 @@ public class AuthorityServlet extends BaseServlet {
      * @return
      */
     public Object getOperableDatabase(HttpServletRequest request, HttpServletResponse response) {
-        return service.getOperableDatabase(request);
+        List<Object> list = new ArrayList<>();
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase" + GetUserId.getUserId(request));
+        list.add(userDatabase.getUser().getUsername());
+        list.add(service.getOperableDatabase(request));
+        return list;
     }
 }

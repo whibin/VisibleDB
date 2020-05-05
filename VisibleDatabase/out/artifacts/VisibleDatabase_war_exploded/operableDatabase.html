@@ -26,17 +26,20 @@
             $.get(
                 "authorityServlet/getOperableDatabase",
                 {},
-                function (list) {
+                function (all) {
+                    let list = all[1];
                     for (let i = 0; i < list.length; i++) {
                         $("#ope").append("<tr></tr>");
                         $("tr:last").append("<td>"+list[i].user.username+"</td>").append("<td><button type=\"button\" class=\"btn btn-primary\" id=\"sql\">Enter sql Database</button>\n" +
                             "                <button type=\"button\" class=\"btn btn-primary\" id=\"redis\">Enter redis Database</button></td>");
                         $("#sql").click(function () {
                             setCookie("OtherUserId",list[i].user.id);
+                            setCookie("authority",list[i].authority[all[0]]);
                             location.href = "sqlOther.html";
                         })
                         $("#redis").click(function () {
                             setCookie("OtherUserId",list[i].user.id);
+                            setCookie("authority",list[i].authority[all[0]]);
                             location.href = "redisOther.html";
                         })
                     }

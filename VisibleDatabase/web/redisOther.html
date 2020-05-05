@@ -22,9 +22,18 @@
         function setCookie(name, value) {
             document.cookie = name + "=" + escape(value);
         }
+        function getCookie(name) {
+            let reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+            let arr = document.cookie.match(reg);
+            if (arr != null) {
+                return unescape(arr[2]);
+            } else {
+                return null;
+            }
+        }
         $(function () {
             $.get(
-                "redisServlet/getDatabase",
+                "otherUserDatabaseServlet/getRedisDatabase",
                 {},
                 function (databaseMap) {
                     for (let key in databaseMap) {
@@ -35,11 +44,23 @@
             var options = {
                 beforeSubmit: addDatabaseName,
                 success: show,
-                url: "redisServlet/parseCommand",
+                url: "otherUserDatabaseServlet/parseCommand",
                 dataType: "json",
                 resetForm: true
             }
             function addDatabaseName() {
+                let a = getCookie("authority");
+                let v = $("#redisCommand").val();
+                if (v.trim().startsWith("get") && a == "WRITE ONLY") {
+                    alert("You don't have enough authority!");
+                    return false;
+                }
+                if (v.trim().startsWith("set") || v.trim().startsWith("del")) {
+                    if (a == "READ ONLY") {
+                        alert("You don't have enough authority!");
+                        return false;
+                    }
+                }
                 let val = $("#SelectDatabase > option:selected").val();
                 if (val == "Select Database") {
                     alert("Please select a database!")
@@ -59,7 +80,7 @@
                         $("#title").append("<td>"+map[key]+"</td>");
                     }
                 } else {
-                    location.href = "redis.html"
+                    location.href = "redisOther.html"
                 }
             }
             $("#redis").ajaxForm(options);

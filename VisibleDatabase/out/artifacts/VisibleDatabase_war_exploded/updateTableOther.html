@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Visible Database</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery-3.5.0.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.form.js"></script>
+    <style>
+        h1 {
+            text-align: center;
+        }
+    </style>
+    <script !src="">
+        function getCookie(name) {
+            let reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+            let arr = document.cookie.match(reg);
+            if (arr != null) {
+                return unescape(arr[2]);
+            } else {
+                return null;
+            }
+        }
+        $(function () {
+            $("#databaseName").val(getCookie("DatabaseName"));
+            $("#oldTableName").val(getCookie("tableName"));
+            $("#tableName").val(getCookie("tableName"));
+            $.get(
+                "otherUserDatabaseServlet/getDatabase",
+                {},
+                function (databaseMap) {
+                    let i = 1;
+                    let x = databaseMap[getCookie("DatabaseName")].tableMap[getCookie("tableName")].fieldType;
+                    for (let name in x) {
+                        $("#field"+i).val(name);
+                        for (let v of $("#dataType"+i+" > option")) {
+                            if ($(v).html() == x[name]) {
+                                $(v).prop("selected",true);
+                            }
+                        }
+                        i++;
+                    }
+                }
+            )
+            var options = {
+                beforeSubmit: check,
+                success: jump,
+                url: "otherUserDatabaseServlet/updateTable",
+                dataType: "json",
+                resetForm: true
+            }
+            function check() {
+                let name = $("#tableName").val();
+                let checker = /^\w{1,15}$/
+                if (!checker.test(name)) {
+                    alert("The length of name must be from 1 to 15!");
+                    return false;
+                }
+                if (getCookie("authority") == "READ ONLY") {
+                    alert("You don't have enough authority!");
+                    return false;
+                }
+                return true;
+            }
+            function jump() {
+                location.href = "sqlOther.html";
+            }
+            $("form").ajaxForm(options);
+        })
+    </script>
+</head>
+<body>
+<!-- 导航条 -->
+<div>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">whibin</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- 跳转到个人信息 -->
+                    <li><a href="information.html">Personal Information</a></li>
+                    <li><a href="sql.html">Enter sql Database</a></li>
+                    <!-- 进入redis数据库 -->
+                    <li><a href="redis.html">Enter redis Database</a></li>
+                    <li><a href="authority.html">Command my database authorities</a></li>
+                    <li><a href="operableDatabase.html">Go to operable databases</a></li>
+                    <li><a href="otherUsers.html">Other users</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
+    <div class="container">
+        <h1>Table information</h1>
+        <form>
+            <input type="text" name="oldTableName" id="oldTableName" style="display: none">
+            <div class="form-group">
+                <label for="databaseName">Your selected Database</label>
+                <input type="text" class="form-control" id="databaseName" name="databaseName" readonly>
+            </div>
+            <div class="form-group">
+                <label for="tableName">Table name</label>
+                <input type="text" class="form-control" id="tableName" placeholder="Table name" name="tableName" required>
+            </div>
+            <!-- 字段设置 -->
+            <div>
+                <div class="form-group">
+                    <label for='field1'>Field</label>
+                    <input type="text" class="form-control" id='field1' placeholder="Field name" required name='field'>
+                </div>
+                <div class="form-group">
+                    <label for='dataType1'>Data type</label>
+                    <select class="form-control" id='dataType1' name='dataType'>
+                        <option>bigint</option>
+                        <option>int</option>
+                        <option>mediumint</option>
+                        <option>char</option>
+                        <option>varchar</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <div class="form-group">
+                    <label for='field2'>Field</label>
+                    <input type="text" class="form-control" id='field2' placeholder="Field name" name='field'>
+                </div>
+                <div class="form-group">
+                    <label for='dataType2'>Data type</label>
+                    <select class="form-control" id='dataType2' name='dataType'>
+                        <option>bigint</option>
+                        <option>int</option>
+                        <option>mediumint</option>
+                        <option>char</option>
+                        <option>varchar</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <div class="form-group">
+                    <label for='field3'>Field</label>
+                    <input type="text" class="form-control" id='field3' placeholder="Field name" name='field'>
+                </div>
+                <div class="form-group">
+                    <label for='dataType3'>Data type</label>
+                    <select class="form-control" id='dataType3' name='dataType'>
+                        <option>bigint</option>
+                        <option>int</option>
+                        <option>mediumint</option>
+                        <option>char</option>
+                        <option>varchar</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <div class="form-group">
+                    <label for='field4'>Field</label>
+                    <input type="text" class="form-control" id='field4' placeholder="Field name" name='field'>
+                </div>
+                <div class="form-group">
+                    <label for='dataType4'>Data type</label>
+                    <select class="form-control" id='dataType4' name='dataType'>
+                        <option>bigint</option>
+                        <option>int</option>
+                        <option>mediumint</option>
+                        <option>char</option>
+                        <option>varchar</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-default">Update</button>
+        </form>
+    </div>
+</body>
+</html>

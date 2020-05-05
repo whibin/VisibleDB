@@ -25,17 +25,26 @@
         function setCookie(name, value) {
             document.cookie = name + "=" + escape(value);
         }
+        function getCookie(name) {
+            let reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+            let arr = document.cookie.match(reg);
+            if (arr != null) {
+                return unescape(arr[2]);
+            } else {
+                return null;
+            }
+        }
         function remove(id) {
             if (confirm("Do you really want to delete this data?")) {
                 $.get(
-                    "sqlServlet/deleteData",
+                    "otherUserDatabaseServlet/deleteData",
                     {
                         databaseName: $("#SelectDatabase > option:selected").val(),
                         tableName: $("#SelectTable > option:selected").val(),
                         id: id
                     },
                     function () {
-                        location.href = "sql.html"
+                        location.href = "sqlOther.html"
                     }
                 )
             }
@@ -57,14 +66,14 @@
                 $("#formRow").append("<td><button type=\"button\" class=\"btn btn-default\" id=\"submitUpdate\">update</button></td>");
                 $("#submitUpdate").click(function () {
                     $.get(
-                        "sqlServlet/updateData?data="+$("#formRow > td > input:eq(0)").val()+"&data="+$("#formRow > td > input:eq(1)").val()+"&data="+$("#formRow > td > input:eq(2)").val()+"&data="+$("#formRow > td > input:eq(3)").val(),
+                        "otherUserDatabaseServlet/updateData?data="+$("#formRow > td > input:eq(0)").val()+"&data="+$("#formRow > td > input:eq(1)").val()+"&data="+$("#formRow > td > input:eq(2)").val()+"&data="+$("#formRow > td > input:eq(3)").val(),
                         {
                             databaseName: $("#SelectDatabase > option:selected").val(),
                             tableName: $("#SelectTable > option:selected").val(),
                             id: id
                         },
                         function () {
-                            location.href = "sql.html";
+                            location.href = "sqlOther.html";
                         }
                     )
 
@@ -76,7 +85,7 @@
         }
         $(function () {
             $.get(
-                "sqlServlet/getDatabase",
+                "otherUserDatabaseServlet/getDatabase",
                 {},
                 function (databaseMap) {
                     for (let key in databaseMap) {
@@ -85,17 +94,24 @@
                 }
             )
             $("#CreateTable").click(function () {
+                let a = getCookie("authority");
                 let val = $("#SelectDatabase > option:selected").val();
                 if (val == "Select Database") {
                     alert("Please select a database!")
+                } else if (a == "READ ONLY") {
+                    alert("You don't have enough authority!");
                 } else {
                     setCookie("DatabaseName",val);
-                    location.href = "CreateTable.html";
+                    location.href = "CreateTableOther.html";
                 }
             })
             $("#SelectDatabase").blur(function () {
+                if (getCookie("authority") == "WRITE ONLY") {
+                    alert("You don't have enough authority to read table data!");
+                    return;
+                }
                 $.get(
-                    "sqlServlet/getDatabase",
+                    "otherUserDatabaseServlet/getDatabase",
                     {},
                     function (databaseMap) {
                         let val = $("#SelectDatabase > option:selected").val();
@@ -112,16 +128,18 @@
                 let val = $("#SelectTable > option:selected").val();
                 if (val == "Select Table") {
                     alert("Please select a table!")
+                } else if (getCookie("authority") == "READ ONLY") {
+                    alert("You don't have enough authority!");
                 } else {
                     if (confirm("Do you really want to delete this table?")) {
                         $.get(
-                            "sqlServlet/deleteTable",
+                            "otherUserDatabaseServlet/deleteTable",
                             {
                                 tableName: val,
                                 databaseName: $("#SelectDatabase > option:selected").val()
                             },
                             function () {
-                                location.href = "sql.html"
+                                location.href = "sqlOther.html"
                             }
                         )
                     }
@@ -135,13 +153,13 @@
                     let val0 = $("#SelectDatabase > option:selected").val();
                     setCookie("databaseName",val0);
                     setCookie("tableName",val);
-                    location.href = "updateTable.html";
+                    location.href = "updateTableOther.html";
                 }
             })
             var c = 0;
             $("#SelectTable").blur(function () {
                 $.get(
-                    "sqlServlet/getDatabase",
+                    "otherUserDatabaseServlet/getDatabase",
                     {},
                     function (databaseMap) {
                         let val = $("#SelectTable > option:selected").val();
@@ -181,7 +199,7 @@
             var options = {
                 beforeSubmit: check1,
                 success: jump,
-                url: "sqlServlet/addData",
+                url: "otherUserDatabaseServlet/addData",
                 dataType: "json",
                 resetForm: true
             }
@@ -205,18 +223,32 @@
                 return true;
             }
             function jump() {
-                location.href = "sql.html";
+                location.href = "sqlOther.html";
             }
             $("#add").ajaxForm(options);
             // sql表单提交
             var options2 = {
                 beforeSubmit: addDatabaseName,
                 success: show,
-                url: "sqlServlet/parseSql",
+                url: "otherUserDatabaseServlet/parseSql",
                 dataType: "json",
                 resetForm: true
             }
             function addDatabaseName() {
+                let sqlV = $("#sqlI").val();
+                let a = getCookie("authority");
+                if (sqlV.trim().startsWith("select",0) && a == "WRITE ONLY") {
+                    alert("You don't have enough authority!");
+                    return false;
+                }
+                if (sqlV.trim().startsWith("insert",0) ||
+                    sqlV.trim().startsWith("delete",0) ||
+                    sqlV.trim().startsWith("update",0)) {
+                    if (a == "READ ONLY") {
+                        alert("You don't have enough authority!");
+                        return false;
+                    }
+                }
                 let val = $("#SelectDatabase > option:selected").val();
                 if (val == "Select Database") {
                     alert("Please select a database!")
@@ -229,7 +261,7 @@
                 if (!resultInfo.status) {
                     alert(resultInfo.message);
                 } else if (resultInfo.status && resultInfo.data == null) {
-                    location.href = "sql.html";
+                    location.href = "sqlOther.html";
                 } else {
                     // 把原来表格的数据删除掉
                     for (let v of $("tr")) {
