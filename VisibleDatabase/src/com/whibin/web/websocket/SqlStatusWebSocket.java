@@ -1,4 +1,4 @@
-package com.whibin.web;
+package com.whibin.web.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

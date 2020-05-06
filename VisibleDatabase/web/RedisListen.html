@@ -10,30 +10,39 @@
     <script src="js/jquery-3.5.0.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.form.js"></script>
-    <script src="js/websocket.js"></script>
+    <script src="js/websocket-redis.js"></script>
     <style>
         h1 {
             text-align: center;
         }
-        button {
-            margin-left: 10px;
-        }
     </style>
     <script !src="">
         function show(data) {
+            let c = 0;
             let jData = JSON.parse(data);
-            for (let key in jData) {
-                let list = jData[key];
-                for (let i = 0; i < list.length; i++) {
+            for (let username in jData) {
+                $("#ope").append("<tr></tr>");
+                for (let databaseName in jData[username]) {
+                    $("tr:eq("+c+")").append("<th>User: "+username+"</th>").append("<th>Database: "+databaseName+"</th>");
                     $("#ope").append("<tr></tr>");
-                    $("tr:last").append("<td>"+key+"</td>").append("<td>"+list[i]+"</td>");
+                    c++;
+                    $("tr:eq("+c+")").append("<th>Key</th>").append("<th>Value</th>");
+                    $("#ope").append("<tr></tr>");
+                    c++;
+                    let datum = jData[username][databaseName];
+                    for (let key in datum) {
+                        let value = datum[key];
+                        $("tr:eq("+c+")").append("<td>"+key+"</td>").append("<td>"+value+"</td>");
+                        $("#ope").append("<tr></tr>");
+                        c++;
+                    }
                 }
             }
         }
         $(function () {
             setInterval(function () {
-                $("tr:gt(0)").remove();
-                websocket.send("GET");
+                $("tr").remove();
+                websocket.send("");
             },5000);
             websocket.onmessage = function(event) {
                 $(".container").hide();
@@ -72,11 +81,9 @@
         </div><!-- /.container-fluid -->
     </nav>
 </div>
-<h1>User Database</h1>
+    <h1>Redis Listener</h1>
 <div class="container">
-    <table class="table table-bordered table-hover" id="ope">
-        <tr></tr>
-    </table>
+    <table class="table" id="ope"></table>
 </div>
 </body>
 </html>

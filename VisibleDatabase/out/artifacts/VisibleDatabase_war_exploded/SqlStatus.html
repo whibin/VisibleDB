@@ -31,12 +31,14 @@
             }
         }
         $(function () {
-            // 判断当前浏览器是否支持WebSocket
-            $("button").click(function () {
+            setInterval(function () {
+                $("tr:gt(0)").remove();
                 websocket.send("GET");
-            })
+            },5000);
             websocket.onmessage = function(event) {
+                $(".container").hide();
                 show(event.data);
+                $(".container").fadeIn("slow");
             }
         })
     </script>
@@ -64,19 +66,16 @@
                     <li><a href="admin.html">Database</a></li>
                     <li><a href="admin-authority.html">authority</a></li>
                     <li><a href="SqlStatus.html">Sql Database Status</a></li>
+                    <li><a href="RedisListen.html">Redis Database Listen</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
 </div>
-<button class="btn btn-primary" type="submit">Show Messages</button>
 <h1>User Database</h1>
 <div class="container">
     <table class="table table-bordered table-hover" id="ope">
-        <tr>
-            <th>Database Name</th>
-            <th>Status</th>
-        </tr>
+        <tr></tr>
     </table>
 </div>
 </body>
