@@ -21,11 +21,10 @@ public interface DatabaseCommonService {
     /**
      * 新建UserDatabase对象并且设置User属性
      * @param session
-     * @param dao
      * @param id
      * @return
      */
-    UserDatabase newUserDatabaseAndSetUser(HttpSession session, UserDao dao, String id);
+    UserDatabase newUserDatabaseAndSetUser(HttpSession session, String id);
 
     /**
      * 创建表
@@ -174,4 +173,46 @@ public interface DatabaseCommonService {
      * @return
      */
     Object parseCommand(HttpServletRequest request, String userId);
+
+    /**
+     * 创建数据库
+     * @param request
+     * @param id
+     */
+    void createDatabase(HttpServletRequest request, String id);
+
+    /**
+     * 删除数据库
+     * @param request
+     * @param userId
+     */
+    void deleteDatabase(HttpServletRequest request, String userId);
+
+    /**
+     * 修改数据库
+     * @param request
+     * @param userId
+     */
+    void updateDatabase(HttpServletRequest request, String userId);
+
+    /**
+     * 创建redis数据库
+     * @param request
+     * @param id
+     */
+    void createRedisDatabase(HttpServletRequest request, String id);
+
+    /**
+     * 修改redis数据库
+     * @param request
+     * @param userId
+     */
+    void updateRedisDatabase(HttpServletRequest request, String userId);
+
+    /**
+     * 删除redis数据库
+     * @param request
+     * @param userId
+     */
+    void deleteRedisDatabase(HttpServletRequest request, String userId);
 }

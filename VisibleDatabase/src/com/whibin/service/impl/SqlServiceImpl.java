@@ -26,40 +26,11 @@ import java.util.*;
  */
 
 public class SqlServiceImpl implements SqlService {
-    private UserDao dao = new UserDaoImpl();
     private DatabaseCommonService commonService = new DatabaseCommonServiceImpl();
 
     @Override
     public void createDatabase(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        // 获取数据库的名字
-        String name = request.getParameter("name");
-        if (commonService.isNull(name)) {
-            return;
-        }
-        name = name.toLowerCase();
-        // 创建database对象
-        Database database = new Database();
-        String id = GetUserId.getUserId(request);
-        // 在session中获取userDatabase，若为空则新建一个
-        Object newUserSql = session.getAttribute("userDatabase"+id);
-        if (newUserSql != null) {
-            UserDatabase userSql = (UserDatabase) newUserSql;
-            if (userSql.getDatabaseMap() == null) {
-                Map<String, Database> databaseMap = new HashMap<>();
-                userSql.setDatabaseMap(databaseMap);
-            }
-            userSql.getDatabaseMap().put(name,database);
-            session.setAttribute("userDatabase"+id,userSql);
-            return;
-        }
-        UserDatabase userDatabase = commonService.newUserDatabaseAndSetUser(session, dao, id);
-        // 创建map
-        Map<String, Database> databaseMap = new HashMap<>();
-        // 设置database的name
-        databaseMap.put(name,database);
-        userDatabase.setDatabaseMap(databaseMap);
-        session.setAttribute("userDatabase"+id, userDatabase);
+        commonService.createDatabase(request,GetUserId.getUserId(request));
     }
 
     @Override
@@ -69,12 +40,7 @@ public class SqlServiceImpl implements SqlService {
 
     @Override
     public void deleteDatabase(HttpServletRequest request) {
-        // 获取数据库名称
-        String databaseName = request.getParameter("name");
-        // 删除该数据库
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
-        userDatabase.getDatabaseMap().remove(databaseName);
-        request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
+        commonService.deleteDatabase(request,GetUserId.getUserId(request));
     }
 
     @Override
@@ -84,23 +50,7 @@ public class SqlServiceImpl implements SqlService {
 
     @Override
     public void updateDatabase(HttpServletRequest request) {
-        // 获取新旧数据库的名称
-        String oldName = request.getParameter("oldName");
-        String newName = request.getParameter("newName");
-        if (commonService.isNull(newName)) {
-            return;
-        }
-        newName = newName.toLowerCase();
-        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+GetUserId.getUserId(request));
-        // 获取databaseMap
-        Map<String, Database> databaseMap = userDatabase.getDatabaseMap();
-        // 获取旧数据库
-        Database database = databaseMap.get(oldName);
-        // 将旧数据库名称从databaseMap删除
-        databaseMap.remove(oldName);
-        // 将新的数据库名称添加进去
-        databaseMap.put(newName,database);
-        request.getSession().setAttribute("userDatabase"+GetUserId.getUserId(request),userDatabase);
+        commonService.updateDatabase(request,GetUserId.getUserId(request));
     }
 
     @Override

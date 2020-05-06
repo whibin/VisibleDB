@@ -1,10 +1,12 @@
 package com.whibin.service.impl;
 
 import com.whibin.dao.UserDao;
+import com.whibin.dao.impl.UserDaoImpl;
 import com.whibin.domain.SqlType;
 import com.whibin.domain.po.User;
 import com.whibin.domain.vo.*;
 import com.whibin.service.DatabaseCommonService;
+import com.whibin.util.GetUserId;
 import com.whibin.util.SqlParser;
 import net.sf.jsqlparser.JSQLParserException;
 
@@ -23,8 +25,10 @@ import java.util.Map;
  */
 
 public class DatabaseCommonServiceImpl implements DatabaseCommonService {
+    private UserDao dao = new UserDaoImpl();
+
     @Override
-    public UserDatabase newUserDatabaseAndSetUser(HttpSession session, UserDao dao, String id) {
+    public UserDatabase newUserDatabaseAndSetUser(HttpSession session, String id) {
         UserDatabase userDatabase = new UserDatabase();
         User user = (User) session.getAttribute("user" + id);
         if (user == null) {
@@ -478,5 +482,131 @@ public class DatabaseCommonServiceImpl implements DatabaseCommonService {
             return new ResultInfo(false,"Please check the syntax",null);
         }
         return new ResultInfo(false,"Please check the syntax",null);
+    }
+
+    @Override
+    public void createDatabase(HttpServletRequest request, String id) {
+        HttpSession session = request.getSession();
+        // 获取数据库的名字
+        String name = request.getParameter("name");
+        if (isNull(name)) {
+            return;
+        }
+        name = name.toLowerCase();
+        // 创建database对象
+        Database database = new Database();
+        // 在session中获取userDatabase，若为空则新建一个
+        Object newUserSql = session.getAttribute("userDatabase"+id);
+        if (newUserSql != null) {
+            UserDatabase userSql = (UserDatabase) newUserSql;
+            if (userSql.getDatabaseMap() == null) {
+                Map<String, Database> databaseMap = new HashMap<>();
+                userSql.setDatabaseMap(databaseMap);
+            }
+            userSql.getDatabaseMap().put(name,database);
+            session.setAttribute("userDatabase"+id,userSql);
+            return;
+        }
+        UserDatabase userDatabase = newUserDatabaseAndSetUser(session, id);
+        // 创建map
+        Map<String, Database> databaseMap = new HashMap<>();
+        // 设置database的name
+        databaseMap.put(name,database);
+        userDatabase.setDatabaseMap(databaseMap);
+        session.setAttribute("userDatabase"+id, userDatabase);
+    }
+
+    @Override
+    public void deleteDatabase(HttpServletRequest request, String userId) {
+        // 获取数据库名称
+        String databaseName = request.getParameter("name");
+        // 删除该数据库
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+userId);
+        userDatabase.getDatabaseMap().remove(databaseName);
+        request.getSession().setAttribute("userDatabase"+userId,userDatabase);
+    }
+
+    @Override
+    public void updateDatabase(HttpServletRequest request, String userId) {
+        // 获取新旧数据库的名称
+        String oldName = request.getParameter("oldName");
+        String newName = request.getParameter("newName");
+        if (isNull(newName)) {
+            return;
+        }
+        newName = newName.toLowerCase();
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+userId);
+        // 获取databaseMap
+        Map<String, Database> databaseMap = userDatabase.getDatabaseMap();
+        // 获取旧数据库
+        Database database = databaseMap.get(oldName);
+        // 将旧数据库名称从databaseMap删除
+        databaseMap.remove(oldName);
+        // 将新的数据库名称添加进去
+        databaseMap.put(newName,database);
+        request.getSession().setAttribute("userDatabase"+userId,userDatabase);
+    }
+
+    @Override
+    public void createRedisDatabase(HttpServletRequest request, String id) {
+        HttpSession session = request.getSession();
+        // 获取数据库的名字
+        String name = request.getParameter("name");
+        if (name == null || name.length() <= 0) {
+            return;
+        }
+        name = name.toLowerCase();
+        // 创建redisDatabase对象
+        RedisDatabase redisDatabase = new RedisDatabase();
+        // 在session中获取userDatabase，若为空则新建一个
+        Object newUserDatabase = session.getAttribute("userDatabase"+id);
+        if (newUserDatabase != null) {
+            UserDatabase userSql = (UserDatabase) newUserDatabase;
+            if (userSql.getRedisDatabaseMap() == null) {
+                Map<String, RedisDatabase> databaseMap = new HashMap<>();
+                userSql.setRedisDatabaseMap(databaseMap);
+            }
+            userSql.getRedisDatabaseMap().put(name,redisDatabase);
+            session.setAttribute("userDatabase"+id,userSql);
+            return;
+        }
+        UserDatabase userDatabase = newUserDatabaseAndSetUser(session, id);
+        // 创建map
+        Map<String, RedisDatabase> map = new HashMap<>();
+        // 设置database的name
+        map.put(name,redisDatabase);
+        userDatabase.setRedisDatabaseMap(map);
+        session.setAttribute("userDatabase"+id, userDatabase);
+    }
+
+    @Override
+    public void updateRedisDatabase(HttpServletRequest request, String userId) {
+        // 获取新旧数据库的名称
+        String oldName = request.getParameter("oldName");
+        String newName = request.getParameter("newName");
+        if (newName == null || newName.length() <= 0) {
+            return;
+        }
+        newName = newName.toLowerCase();
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+userId);
+        // 获取databaseMap
+        Map<String, RedisDatabase> databaseMap = userDatabase.getRedisDatabaseMap();
+        // 获取旧数据库
+        RedisDatabase database = databaseMap.get(oldName);
+        // 将旧数据库名称从databaseMap删除
+        databaseMap.remove(oldName);
+        // 将新的数据库名称添加进去
+        databaseMap.put(newName,database);
+        request.getSession().setAttribute("userDatabase"+userId,userDatabase);
+    }
+
+    @Override
+    public void deleteRedisDatabase(HttpServletRequest request, String userId) {
+        // 获取数据库名称
+        String databaseName = request.getParameter("name");
+        // 删除该数据库
+        UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase"+userId);
+        userDatabase.getRedisDatabaseMap().remove(databaseName);
+        request.getSession().setAttribute("userDatabase"+userId,userDatabase);
     }
 }

@@ -14,7 +14,7 @@
         h1 {
             text-align: center;
         }
-        #sql,#redis {
+        button {
             margin-left: 10px;
         }
     </style>
@@ -30,14 +30,13 @@
                     let list = all[1];
                     for (let i = 0; i < list.length; i++) {
                         $("#ope").append("<tr></tr>");
-                        $("tr:last").append("<td>"+list[i].user.username+"</td>").append("<td><button type=\"button\" class=\"btn btn-primary\" id=\"sql\">Enter sql Database</button>\n" +
-                            "                <button type=\"button\" class=\"btn btn-primary\" id=\"redis\">Enter redis Database</button></td>");
-                        $("#sql").click(function () {
+                        $("tr:last").append("<td>"+list[i].user.username+"</td>").append("<td><button type='button' class='btn btn-primary' id='sql"+i+"'>Enter sql Database</button><button type='button' class='btn btn-primary' id='redis"+i+"'>Enter redis Database</button></td>");
+                        $("#sql"+i).click(function () {
                             setCookie("OtherUserId",list[i].user.id);
                             setCookie("authority",list[i].authority[all[0]]);
                             location.href = "sqlOther.html";
                         })
-                        $("#redis").click(function () {
+                        $("#redis"+i).click(function () {
                             setCookie("OtherUserId",list[i].user.id);
                             setCookie("authority",list[i].authority[all[0]]);
                             location.href = "redisOther.html";

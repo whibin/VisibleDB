@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Visible Database</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery-3.5.0.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.form.js"></script>
+    <style>
+        #main {
+            margin-top: 25px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #update {
+            margin-right: 10px;
+        }
+    </style>
+    <script !src="">
+        function setCookie(name, value) {
+            document.cookie = name + "=" + escape(value);
+        }
+        function getCookie(name) {
+            let reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+            let arr = document.cookie.match(reg);
+            if (arr != null) {
+                return unescape(arr[2]);
+            } else {
+                return null;
+            }
+        }
+        function remove(id) {
+            if (confirm("Do you really want to delete this data?")) {
+                $.get(
+                    "otherUserDatabaseServlet/deleteData",
+                    {
+                        databaseName: $("#SelectDatabase > option:selected").val(),
+                        tableName: $("#SelectTable > option:selected").val(),
+                        id: id
+                    },
+                    function () {
+                        location.href = "admin-sqlOther.html"
+                    }
+                )
+            }
+        }
+        var q = 0;
+        function update(id) {
+            if (q == 0) {
+                q++;
+                let y = id + 2;
+                let count = 0;
+                for (let v of $("tr:eq("+y+") > td")) {
+                    count++;
+                }
+                count = count - 1;
+                $("tr:eq("+y+")").after("<tr id='formRow'></tr>");
+                for (let i = 0; i < count; i++) {
+                    $("#formRow").append("<td><input name='data' value='"+$("tr:eq("+y+") > td:eq("+i+")").html()+"'></td>");
+                }
+                $("#formRow").append("<td><button type=\"button\" class=\"btn btn-default\" id=\"submitUpdate\">update</button></td>");
+                $("#submitUpdate").click(function () {
+                    $.get(
+                        "otherUserDatabaseServlet/updateData?data="+$("#formRow > td > input:eq(0)").val()+"&data="+$("#formRow > td > input:eq(1)").val()+"&data="+$("#formRow > td > input:eq(2)").val()+"&data="+$("#formRow > td > input:eq(3)").val(),
+                        {
+                            databaseName: $("#SelectDatabase > option:selected").val(),
+                            tableName: $("#SelectTable > option:selected").val(),
+                            id: id
+                        },
+                        function () {
+                            location.href = "admin-sqlOther.html";
+                        }
+                    )
+
+                })
+                $("tr:eq("+y+")").remove();
+            } else {
+                alert("Please submit the data you're updating, then you can update this row's data!")
+            }
+        }
+        $(function () {
+            $.get(
+                "otherUserDatabaseServlet/getDatabase",
+                {},
+                function (databaseMap) {
+                    for (let key in databaseMap) {
+                        $("#SelectDatabase").append("<option>"+ key +"</option>")
+                    }
+                }
+            )
+            $("#CreateTable").click(function () {
+                let a = getCookie("authority");
+                let val = $("#SelectDatabase > option:selected").val();
+                if (val == "Select Database") {
+                    alert("Please select a database!")
+                } else if (a == "READ ONLY") {
+                    alert("You don't have enough authority!");
+                } else {
+                    setCookie("DatabaseName",val);
+                    location.href = "admin-CreateTableOther.html";
+                }
+            })
+            $("#SelectDatabase").blur(function () {
+                if (getCookie("authority") == "WRITE ONLY") {
+                    alert("You don't have enough authority to read table data!");
+                    return;
+                }
+                $.get(
+                    "otherUserDatabaseServlet/getDatabase",
+                    {},
+                    function (databaseMap) {
+                        let val = $("#SelectDatabase > option:selected").val();
+                        if (val != "Select Database") {
+                            $("#SelectTable").html("<option>Select Table</option>")
+                            for (let name in databaseMap[val].tableMap) {
+                                $("#SelectTable").append("<option>"+ name +"</option>")
+                            }
+                        }
+                    }
+                )
+            })
+            $("#deleteTable").click(function () {
+                let val = $("#SelectTable > option:selected").val();
+                if (val == "Select Table") {
+                    alert("Please select a table!")
+                } else if (getCookie("authority") == "READ ONLY") {
+                    alert("You don't have enough authority!");
+                } else {
+                    if (confirm("Do you really want to delete this table?")) {
+                        $.get(
+                            "otherUserDatabaseServlet/deleteTable",
+                            {
+                                tableName: val,
+                                databaseName: $("#SelectDatabase > option:selected").val()
+                            },
+                            function () {
+                                location.href = "admin-sqlOther.html"
+                            }
+                        )
+                    }
+                }
+            })
+            $("#updateTable").click(function () {
+                let val = $("#SelectTable > option:selected").val();
+                if (val == "Select Table") {
+                    alert("Please select a table!")
+                } else {
+                    let val0 = $("#SelectDatabase > option:selected").val();
+                    setCookie("databaseName",val0);
+                    setCookie("tableName",val);
+                    location.href = "admin-updateTableOther.html";
+                }
+            })
+            var c = 0;
+            $("#SelectTable").blur(function () {
+                $.get(
+                    "otherUserDatabaseServlet/getDatabase",
+                    {},
+                    function (databaseMap) {
+                        let val = $("#SelectTable > option:selected").val();
+                        if (val != "Select Table") {
+                            let x = databaseMap[$("#SelectDatabase > option:selected").val()].tableMap[val];
+                            let fields = x.fieldType;
+                            if ($("th")[0] == null) {
+                                for (let key in fields) {
+                                    $("#title").append("<th>"+key+"</th>")
+                                    $("#Input").append("<td><input type='text' name='data' id='data'></td>")
+                                }
+                                $("#title").append("<th>Operation</th>")
+                                $("#Input").append("<td><button class='btn btn-default' type='submit'>Add</button></td>")
+                                $("#title").css("backgroundColor","pink")
+                            }
+                            // 获取数据
+                            let data = x.data;
+                            let i = 0;
+                            for (let key in fields) {
+                                i = data[key].length;
+                                break;
+                            }
+                            if (c == 0) {
+                                c++;
+                                for (let j = 0; j < i; j++) {
+                                    $("#resultSet").append("<tr></tr>")
+                                    for (let key in fields) {
+                                        $("tr:last").append("<td>"+ data[key][j] +"</td>");
+                                    }
+                                    $("tr:last").append("<td><a role='button' class='btn btn-default' id='update' href='javascript:update("+j+")'>update</a><a role='button' class='btn btn-warning' href='javascript:remove("+j+")'>delete</a></td>");
+                                }
+                            }
+                        }
+                    }
+                )
+            })
+            var options = {
+                beforeSubmit: check1,
+                success: jump,
+                url: "otherUserDatabaseServlet/addData",
+                dataType: "json",
+                resetForm: true
+            }
+            function check1() {
+                let all = 0;
+                for (let v of $("#title > th")) {
+                    all++;
+                }
+                let count = 0;
+                for (let v of $("#Input > td > input")) {
+                    if ($(v).val() == "") {
+                        count++;
+                    }
+                }
+                if (count + 1 == all) {
+                    alert("The data mustn't be all null!");
+                    return false;
+                }
+                setCookie("databaseName",$("#SelectDatabase > option:selected").val())
+                setCookie("tableName",$("#SelectTable > option:selected").val())
+                return true;
+            }
+            function jump() {
+                location.href = "admin-sqlOther.html";
+            }
+            $("#add").ajaxForm(options);
+            // sql表单提交
+            var options2 = {
+                beforeSubmit: addDatabaseName,
+                success: show,
+                url: "otherUserDatabaseServlet/parseSql",
+                dataType: "json",
+                resetForm: true
+            }
+            function addDatabaseName() {
+                let sqlV = $("#sqlI").val();
+                let a = getCookie("authority");
+                if (sqlV.trim().startsWith("select",0) && a == "WRITE ONLY") {
+                    alert("You don't have enough authority!");
+                    return false;
+                }
+                if (sqlV.trim().startsWith("insert",0) ||
+                    sqlV.trim().startsWith("delete",0) ||
+                    sqlV.trim().startsWith("update",0)) {
+                    if (a == "READ ONLY") {
+                        alert("You don't have enough authority!");
+                        return false;
+                    }
+                }
+                let val = $("#SelectDatabase > option:selected").val();
+                if (val == "Select Database") {
+                    alert("Please select a database!")
+                    return false;
+                }
+                setCookie("databaseName",$("#SelectDatabase > option:selected").val());
+                return true;
+            }
+            function show(resultInfo) {
+                if (!resultInfo.status) {
+                    alert(resultInfo.message);
+                } else if (resultInfo.status && resultInfo.data == null) {
+                    location.href = "admin-sqlOther.html";
+                } else {
+                    // 把原来表格的数据删除掉
+                    for (let v of $("tr")) {
+                        $(v).remove();
+                    }
+                    // 把字段的行重新添加回去
+                    $("#resultSet").append("<tr id=\"title\"></tr>");
+                    // 添加字段名
+                    if ($("th")[0] == null) {
+                        for (let key in resultInfo.data) {
+                            $("#title").append("<th>"+key+"</th>")
+                        }
+                        $("#title").css("backgroundColor","pink")
+                    }
+                    // 获取数据
+                    let data = resultInfo.data;
+                    let i = 0;
+                    for (let key in data) {
+                        i = data[key].length;
+                        break;
+                    }
+                    var d = 0;
+                    if (d == 0) {
+                        d++;
+                        for (let j = 0; j < i; j++) {
+                            $("#resultSet").append("<tr></tr>")
+                            for (let key in data) {
+                                $("tr:last").append("<td>"+ data[key][j] +"</td>");
+                            }
+                        }
+                    }
+                }
+            }
+            $("#sql").ajaxForm(options2);
+            $("#deleteDatabase").click(function () {
+                let val = $("#SelectDatabase > option:selected").val();
+                if (val == "Select Database") {
+                    alert("Please select a database!")
+                } else {
+                    if (confirm("Do you really want to delete this database?")) {
+                        $.get(
+                            "otherUserDatabaseServlet/deleteDatabase",
+                            {name: val},
+                            function () {
+                                location.href = "admin-sqlOther.html"
+                            }
+                        )
+                    }
+                }
+            })
+            $("#updateDatabase").click(function () {
+                let val = $("#SelectDatabase > option:selected").val();
+                if (val == "Select Database") {
+                    alert("Please select a database!")
+                } else {
+                    setCookie("databaseName",val);
+                    location.href = "admin-updateDatabase.html";
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+<!-- 导航条 -->
+<div>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">whibin</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="admin-information.html">Personal Information</a></li>
+                    <li><a href="admin.html">Database</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
+    <h1>Other user's SQL Database</h1>
+    <div class="container" id="main">
+        <a class="btn btn-primary" href="admin-CreateDatabase.html" role="button">Create new database</a>
+        <button class="btn btn-default" href="#" role="button" id="CreateTable">Create new table</button><br><br>
+        <!-- 选择数据库 -->
+        <select class="form-control" id="SelectDatabase">
+            <option>Select Database</option>
+        </select><br>
+        <!-- 选择表 -->
+        <select class="form-control" id="SelectTable">
+            <option>Select Table</option>
+        </select><br>
+        <button type="button" class="btn btn-danger" id="deleteDatabase">Delete database</button>
+        <button type="button" class="btn btn-warning" id="deleteTable">Delete Table</button>
+        <button class="btn btn-default" type="button" id="updateDatabase">Update database</button>
+        <button class="btn btn-default" type="button" id="updateTable">Table information</button><br><br>
+        <!-- sql输入框 -->
+        <form id="sql">
+            <div class="form-group col-lg-7">
+                <input type="text" class="form-control" placeholder="Input sql" name="sql" id="sqlI">
+            </div>
+            <button type="submit" class="btn btn-default">Execute</button>
+        </form>
+        <!-- 结果表格 -->
+        <form id="add">
+        <table class="table table-hover table-bordered" id="resultSet">
+            <tr id="title"></tr>
+            <tr id="Input"></tr>
+        </table>
+        </form>
+    </div>
+</body>
+</html>

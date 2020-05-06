@@ -114,4 +114,58 @@ public class OtherUserDatabaseServlet extends BaseServlet {
     public Object parseCommand(HttpServletRequest request, HttpServletResponse response) {
         return service.parseCommand(request,GetUserId.getOtherUserId(request));
     }
+
+    /**
+     * 创建数据库
+     * @param request
+     * @param response
+     */
+    public void createDatabase(HttpServletRequest request, HttpServletResponse response) {
+        service.createDatabase(request,GetUserId.getOtherUserId(request));
+    }
+
+    /**
+     * 删除数据库
+     * @param request
+     * @param response
+     */
+    public void deleteDatabase(HttpServletRequest request, HttpServletResponse response) {
+        service.deleteDatabase(request,GetUserId.getOtherUserId(request));
+    }
+
+    /**
+     * 修改数据库
+     * @param request
+     * @param response
+     */
+    public void updateDatabase(HttpServletRequest request, HttpServletResponse response) {
+        service.updateDatabase(request,GetUserId.getOtherUserId(request));
+    }
+
+    /**
+     * 创建redis数据库
+     * @param request
+     * @param response
+     */
+    public void createRedisDatabase(HttpServletRequest request, HttpServletResponse response) {
+        service.createRedisDatabase(request,GetUserId.getOtherUserId(request));
+    }
+
+    /**
+     * 删除redis数据库
+     * @param request
+     * @param response
+     */
+    public void deleteRedisDatabase(HttpServletRequest request, HttpServletResponse response) {
+        service.deleteRedisDatabase(request,GetUserId.getOtherUserId(request));
+    }
+
+    /**
+     * 修改redis数据库
+     * @param request
+     * @param response
+     */
+    public void updateRedisDatabase(HttpServletRequest request, HttpServletResponse response) {
+        service.updateRedisDatabase(request,GetUserId.getOtherUserId(request));
+    }
 }

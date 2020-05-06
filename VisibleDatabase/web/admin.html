@@ -24,22 +24,19 @@
                 document.cookie = name + "=" + escape(value);
             }
             $.get(
-                "authorityServlet/getOperableDatabase",
+                "authorityServlet/getUsers",
                 {},
-                function (all) {
-                    let list = all[1];
+                function (list) {
                     for (let i = 0; i < list.length; i++) {
                         $("#ope").append("<tr></tr>");
                         $("tr:last").append("<td>"+list[i].user.username+"</td>").append("<td><button type='button' class='btn btn-primary' id='sql"+i+"'>Enter sql Database</button><button type='button' class='btn btn-primary' id='redis"+i+"'>Enter redis Database</button></td>");
                         $("#sql"+i).click(function () {
                             setCookie("OtherUserId",list[i].user.id);
-                            setCookie("authority",list[i].authority[all[0]]);
-                            location.href = "sqlOther.html";
+                            location.href = "admin-sqlOther.html";
                         })
                         $("#redis"+i).click(function () {
                             setCookie("OtherUserId",list[i].user.id);
-                            setCookie("authority",list[i].authority[all[0]]);
-                            location.href = "redisOther.html";
+                            location.href = "admin-redisOther.html";
                         })
                     }
                 }
@@ -66,27 +63,23 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <!-- 跳转到个人信息 -->
-                    <li><a href="information.html">Personal Information</a></li>
-                    <li><a href="sql.html">Enter sql Database</a></li>
-                    <!-- 进入redis数据库 -->
-                    <li><a href="redis.html">Enter redis Database</a></li>
-                    <li><a href="authority.html">Command my database authorities</a></li>
-                    <li><a href="operableDatabase.html">Go to operable databases</a></li>
-                    <li><a href="otherUsers.html">Other users</a></li>
+                    <li><a href="admin-information.html">Personal Information</a></li>
+                    <li><a href="admin.html">Database</a></li>
+                    <li><a href="admin-authority.html">authority</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
 </div>
-<div class="container">
-    <h1>Operable Databases</h1>
-    <table class="table table-bordered table-hover" id="ope">
-        <tr>
-            <th>User</th>
-            <th>Operation</th>
-        </tr>
-    </table>
-</div>
+    <h1>User Database</h1>
+    <div class="container">
+        <table class="table table-bordered table-hover" id="ope">
+            <tr>
+                <th>User</th>
+                <th>Operation</th>
+            </tr>
+        </table>
+    </div>
+
 </body>
 </html>

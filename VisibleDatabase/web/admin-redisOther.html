@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Visible Database</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery-3.5.0.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.form.js"></script>
+    <style>
+        #main {
+            margin-top: 25px;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+    <script !src="">
+        function setCookie(name, value) {
+            document.cookie = name + "=" + escape(value);
+        }
+        function getCookie(name) {
+            let reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+            let arr = document.cookie.match(reg);
+            if (arr != null) {
+                return unescape(arr[2]);
+            } else {
+                return null;
+            }
+        }
+        $(function () {
+            $.get(
+                "otherUserDatabaseServlet/getRedisDatabase",
+                {},
+                function (databaseMap) {
+                    for (let key in databaseMap) {
+                        $("#SelectDatabase").append("<option>"+ key +"</option>")
+                    }
+                }
+            )
+            var options = {
+                beforeSubmit: addDatabaseName,
+                success: show,
+                url: "otherUserDatabaseServlet/parseCommand",
+                dataType: "json",
+                resetForm: true
+            }
+            function addDatabaseName() {
+                let a = getCookie("authority");
+                let v = $("#redisCommand").val();
+                if (v.trim().startsWith("get") && a == "WRITE ONLY") {
+                    alert("You don't have enough authority!");
+                    return false;
+                }
+                if (v.trim().startsWith("set") || v.trim().startsWith("del")) {
+                    if (a == "READ ONLY") {
+                        alert("You don't have enough authority!");
+                        return false;
+                    }
+                }
+                let val = $("#SelectDatabase > option:selected").val();
+                if (val == "Select Database") {
+                    alert("Please select a database!")
+                    return false;
+                }
+                setCookie("databaseName",$("#SelectDatabase > option:selected").val());
+                return true;
+            }
+            function show(resutInfo) {
+                if (!resutInfo.status && resutInfo.message != null) {
+                    alert(resutInfo.message)
+                } else if (resutInfo.status && resutInfo.data != null) {
+                    $("td").remove()
+                    let map = resutInfo.data;
+                    for (let key in map) {
+                        $("#title").append("<td>"+key+"</td>");
+                        $("#title").append("<td>"+map[key]+"</td>");
+                    }
+                } else {
+                    location.href = "admin-redisOther.html"
+                }
+            }
+            $("#redis").ajaxForm(options);
+            $("#deleteDatabase").click(function () {
+                let val = $("#SelectDatabase > option:selected").val();
+                if (val == "Select Database") {
+                    alert("Please select a database!")
+                } else {
+                    if (confirm("Do you really want to delete this database?")) {
+                        $.get(
+                            "otherUserDatabaseServlet/deleteRedisDatabase",
+                            {name: val},
+                            function () {
+                                location.href = "admin-redisOther.html"
+                            }
+                        )
+                    }
+                }
+            })
+            $("#updateDatabase").click(function () {
+                let val = $("#SelectDatabase > option:selected").val();
+                if (val == "Select Database") {
+                    alert("Please select a database!")
+                } else {
+                    setCookie("databaseName",val);
+                    location.href = "admin-updateRedisDatabase.html";
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+<!-- 导航条 -->
+<div>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">whibin</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="admin-information.html">Personal Information</a></li>
+                    <li><a href="admin.html">Database</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
+<h1>Other user's Redis Database</h1>
+<div class="container" id="main">
+    <a class="btn btn-primary" href="admin-CreateRedisDatabase.html" role="button">Create new database</a><br><br>
+    <!-- 选择数据库 -->
+    <select class="form-control" id="SelectDatabase">
+        <option>Select Database</option>
+    </select><br>
+    <button type="button" class="btn btn-danger" id="deleteDatabase">Delete database</button>
+    <button class="btn btn-default" type="button" id="updateDatabase">Update database</button><br><br>
+    <!-- 语句输入框 -->
+    <form id="redis">
+        <div class="form-group col-lg-7">
+            <input type="text" class="form-control" placeholder="Input command such as: set key value" name="redisCommand" id="redisCommand">
+        </div>
+        <button type="submit" class="btn btn-default">Execute</button>
+    </form>
+    <!-- 结果表格 -->
+    <form id="add">
+        <table class="table table-hover table-bordered" id="resultSet">
+            <tr id="title"></tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

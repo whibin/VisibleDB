@@ -35,13 +35,8 @@ public class AuthorityServiceImpl implements AuthorityService {
             if (attribute == null) {
                 continue;
             }
-            // 没有数据库，跳过
             UserDatabase userDatabase = (UserDatabase) attribute;
-            if (userDatabase.getDatabaseMap() == null
-                    && userDatabase.getRedisDatabaseMap() == null) {
-                continue;
-            }
-            // 有数据库，添加
+            // 符合条件，添加
             list.add(userDatabase);
         }
         System.out.println(list);
