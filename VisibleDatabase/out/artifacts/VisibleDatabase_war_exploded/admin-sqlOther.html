@@ -10,6 +10,7 @@
     <script src="js/jquery-3.5.0.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.form.js"></script>
+    <script src="js/websocket.js"></script>
     <style>
         #main {
             margin-top: 25px;
@@ -44,6 +45,8 @@
                         id: id
                     },
                     function () {
+                        let val1 = $("#SelectDatabase > option:selected").val();
+                        websocket.send(val1+"-One Data has been removed");
                         location.href = "admin-sqlOther.html"
                     }
                 )
@@ -73,6 +76,8 @@
                             id: id
                         },
                         function () {
+                            let val1 = $("#SelectDatabase > option:selected").val();
+                            websocket.send(val1+"-One Data has been updated");
                             location.href = "admin-sqlOther.html";
                         }
                     )
@@ -139,6 +144,8 @@
                                 databaseName: $("#SelectDatabase > option:selected").val()
                             },
                             function () {
+                                let val1 = $("#SelectDatabase > option:selected").val();
+                                websocket.send(val1+"-One Table has been removed");
                                 location.href = "admin-sqlOther.html"
                             }
                         )
@@ -223,6 +230,8 @@
                 return true;
             }
             function jump() {
+                let val1 = $("#SelectDatabase > option:selected").val();
+                websocket.send(val1+"-One Data has been added");
                 location.href = "admin-sqlOther.html";
             }
             $("#add").ajaxForm(options);
@@ -261,8 +270,12 @@
                 if (!resultInfo.status) {
                     alert(resultInfo.message);
                 } else if (resultInfo.status && resultInfo.data == null) {
+                    let val1 = $("#SelectDatabase > option:selected").val();
+                    websocket.send(val1+"-A Data in a Table has been changed");
                     location.href = "admin-sqlOther.html";
                 } else {
+                    let val1 = $("#SelectDatabase > option:selected").val();
+                    websocket.send(val1+"-A Data in a Table has been changed");
                     // 把原来表格的数据删除掉
                     for (let v of $("tr")) {
                         $(v).remove();

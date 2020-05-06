@@ -20,28 +20,24 @@
         }
     </style>
     <script !src="">
-        $(function () {
-            function setCookie(name, value) {
-                document.cookie = name + "=" + escape(value);
-            }
-            $.get(
-                "authorityServlet/getUsers",
-                {},
-                function (list) {
-                    for (let i = 0; i < list.length; i++) {
-                        $("#ope").append("<tr></tr>");
-                        $("tr:last").append("<td>"+list[i].user.username+"</td>").append("<td><button type='button' class='btn btn-primary' id='sql"+i+"'>Enter sql Database</button><button type='button' class='btn btn-primary' id='redis"+i+"'>Enter redis Database</button></td>");
-                        $("#sql"+i).click(function () {
-                            setCookie("OtherUserId",list[i].user.id);
-                            location.href = "admin-sqlOther.html";
-                        })
-                        $("#redis"+i).click(function () {
-                            setCookie("OtherUserId",list[i].user.id);
-                            location.href = "admin-redisOther.html";
-                        })
-                    }
+        function show(data) {
+            let jData = JSON.parse(data);
+            for (let key in jData) {
+                let list = jData[key];
+                for (let i = 0; i < list.length; i++) {
+                    $("#ope").append("<tr></tr>");
+                    $("tr:last").append("<td>"+key+"</td>").append("<td>"+list[i]+"</td>");
                 }
-            )
+            }
+        }
+        $(function () {
+            // 判断当前浏览器是否支持WebSocket
+            $("button").click(function () {
+                websocket.send("GET");
+            })
+            websocket.onmessage = function(event) {
+                show(event.data);
+            }
         })
     </script>
 </head>
@@ -73,14 +69,15 @@
         </div><!-- /.container-fluid -->
     </nav>
 </div>
-    <h1>User Database</h1>
-    <div class="container">
-        <table class="table table-bordered table-hover" id="ope">
-            <tr>
-                <th>User</th>
-                <th>Operation</th>
-            </tr>
-        </table>
-    </div>
+<button class="btn btn-primary" type="submit">Show Messages</button>
+<h1>User Database</h1>
+<div class="container">
+    <table class="table table-bordered table-hover" id="ope">
+        <tr>
+            <th>Database Name</th>
+            <th>Status</th>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

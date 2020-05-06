@@ -10,6 +10,7 @@
     <script src="js/jquery-3.5.0.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.form.js"></script>
+    <script src="js/websocket.js"></script>
     <style>
         h1 {
             text-align: center;
@@ -44,6 +45,8 @@
                 return true;
             }
             function jump() {
+                let val1 = getCookie("DatabaseName");
+                websocket.send(val1+"-A table has been created");
                 location.href = "sql.html";
             }
             $("form").ajaxForm(options);
