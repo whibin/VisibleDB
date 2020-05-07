@@ -1,8 +1,8 @@
 package com.whibin.web.servlet;
 
 import com.whibin.domain.vo.UserDatabase;
-import com.whibin.service.RedisService;
-import com.whibin.service.impl.RedisServiceImpl;
+import com.whibin.service.DatabaseCommonService;
+import com.whibin.service.impl.DatabaseCommonServiceImpl;
 import com.whibin.util.GetUserId;
 
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/redisServlet/*")
 public class RedisServlet extends BaseServlet {
-    private RedisService service = new RedisServiceImpl();
+    private DatabaseCommonService commonService = new DatabaseCommonServiceImpl();
 
     /**
      * 创建数据库
@@ -24,7 +24,7 @@ public class RedisServlet extends BaseServlet {
      * @param response
      */
     public void createDatabase(HttpServletRequest request, HttpServletResponse response) {
-        service.createDatabase(request);
+        commonService.createRedisDatabase(request,GetUserId.getUserId(request));
     }
 
     /**
@@ -47,7 +47,7 @@ public class RedisServlet extends BaseServlet {
      * @param response
      */
     public void deleteDatabase(HttpServletRequest request, HttpServletResponse response) {
-        service.deleteDatabase(request);
+        commonService.deleteRedisDatabase(request,GetUserId.getUserId(request));
     }
 
     /**
@@ -56,7 +56,7 @@ public class RedisServlet extends BaseServlet {
      * @param response
      */
     public void updateDatabase(HttpServletRequest request, HttpServletResponse response) {
-        service.updateDatabase(request);
+        commonService.updateRedisDatabase(request,GetUserId.getUserId(request));
     }
 
     /**
@@ -66,6 +66,6 @@ public class RedisServlet extends BaseServlet {
      * @return
      */
     public Object parseCommand(HttpServletRequest request, HttpServletResponse response) {
-        return service.parseCommand(request);
+        return commonService.parseCommand(request,GetUserId.getUserId(request));
     }
 }

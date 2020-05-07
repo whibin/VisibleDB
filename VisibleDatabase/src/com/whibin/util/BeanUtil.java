@@ -21,15 +21,19 @@ public class BeanUtil {
      * @throws IllegalAccessException
      */
     public static void populate(Object object, Map<String, Object> map) throws NoSuchFieldException, IllegalAccessException {
+        // 获得其类
         Class<?> clz = object.getClass();
+        // 遍历集合，设置属性值
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             Field field;
             try {
                 field = clz.getDeclaredField(entry.getKey());
             } catch (NoSuchFieldException e) {
+                // 若找不到该字段，说明没有，此时跳过即可
                 continue;
             }
             field.setAccessible(true);
+            // 特殊判断
             if ("id".equals(field.getName())) {
                 field.set(object,Long.valueOf((String) entry.getValue()));
                 continue;
@@ -38,6 +42,12 @@ public class BeanUtil {
         }
     }
 
+    /**
+     * 将传入的parameterMap集合的值赋值到所指定的对象中
+     * @param object
+     * @param map
+     * @throws IllegalAccessException
+     */
     public static void populateParameter(Object object, Map<String, String[]> map) throws IllegalAccessException {
         Class<?> clz = object.getClass();
         for (Map.Entry<String, String[]> entry : map.entrySet()) {

@@ -68,7 +68,7 @@
             })
         })
         function checkA() {
-            let check = /^\w{6,15}$/
+            let check = /^\w{6,100}$/
             if (!check.test($("#username").val()) || !check.test($("#exampleInputPassword1").val())) {
                 alert("wrong format!")
                 return false;
@@ -129,7 +129,7 @@
             </div>
             <div class="form-group">
                 <label for="my_photo">Icon</label>
-                <img src="" class="img-circle">
+                <img src="images/icon.jpg" class="img-circle">
                 <input type="file" id="my_photo" name="icon" style="display: none">
                 <p class="help-block">Click the icon if you need to change it</p>
             </div>

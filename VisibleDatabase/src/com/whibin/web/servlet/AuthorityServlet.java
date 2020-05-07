@@ -157,6 +157,9 @@ public class AuthorityServlet extends BaseServlet {
     public Object getOperableDatabase(HttpServletRequest request, HttpServletResponse response) {
         List<Object> list = new ArrayList<>();
         UserDatabase userDatabase = (UserDatabase) request.getSession().getAttribute("userDatabase" + GetUserId.getUserId(request));
+        if (userDatabase == null) {
+            return null;
+        }
         list.add(userDatabase.getUser().getUsername());
         list.add(service.getOperableDatabase(request));
         return list;

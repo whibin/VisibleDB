@@ -13,8 +13,21 @@ import java.util.Map;
  */
 @Data
 public class UserDatabase implements Serializable {
+    /**
+     * 用户的基本信息
+     */
     private User user;
+    /**
+     * sql数据库的map集合
+     */
     private Map<String, Database> databaseMap;
+    /**
+     * redis数据库的map集合
+     */
     private Map<String, RedisDatabase> redisDatabaseMap;
+    /**
+     * 其下的用户权限集合
+     * 一个用户名对应一个权限
+     */
     private Map<String, String> authority;
 }

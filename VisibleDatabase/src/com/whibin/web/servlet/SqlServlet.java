@@ -1,8 +1,8 @@
 package com.whibin.web.servlet;
 
 import com.whibin.domain.vo.UserDatabase;
-import com.whibin.service.SqlService;
-import com.whibin.service.impl.SqlServiceImpl;
+import com.whibin.service.DatabaseCommonService;
+import com.whibin.service.impl.DatabaseCommonServiceImpl;
 import com.whibin.util.GetUserId;
 import net.sf.jsqlparser.JSQLParserException;
 
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/sqlServlet/*")
 public class SqlServlet extends BaseServlet {
-    private SqlService service = new SqlServiceImpl();
+    private DatabaseCommonService commonService = new DatabaseCommonServiceImpl();
 
     /**
      * 创建数据库
@@ -25,7 +25,7 @@ public class SqlServlet extends BaseServlet {
      * @param response
      */
     public void createDatabase(HttpServletRequest request, HttpServletResponse response) {
-        service.createDatabase(request);
+        commonService.createDatabase(request,GetUserId.getUserId(request));
     }
 
     /**
@@ -48,7 +48,7 @@ public class SqlServlet extends BaseServlet {
      * @param response
      */
     public void createTable(HttpServletRequest request, HttpServletResponse response) {
-        service.createTable(request);
+        commonService.createTable(request,GetUserId.getUserId(request));
     }
 
     /**
@@ -57,7 +57,7 @@ public class SqlServlet extends BaseServlet {
      * @param response
      */
     public void deleteDatabase(HttpServletRequest request, HttpServletResponse response) {
-        service.deleteDatabase(request);
+        commonService.deleteDatabase(request,GetUserId.getUserId(request));
     }
 
     /**
@@ -66,7 +66,7 @@ public class SqlServlet extends BaseServlet {
      * @param response
      */
     public void deleteTable(HttpServletRequest request, HttpServletResponse response) {
-        service.deleteTable(request);
+        commonService.deleteTable(request,GetUserId.getUserId(request));
     }
 
     /**
@@ -75,7 +75,7 @@ public class SqlServlet extends BaseServlet {
      * @param response
      */
     public void updateDatabase(HttpServletRequest request, HttpServletResponse response) {
-        service.updateDatabase(request);
+        commonService.updateDatabase(request,GetUserId.getUserId(request));
     }
 
     /**
@@ -84,7 +84,7 @@ public class SqlServlet extends BaseServlet {
      * @param response
      */
     public void updateTable(HttpServletRequest request, HttpServletResponse response) {
-        service.updateTable(request);
+        commonService.updateTable(request,GetUserId.getUserId(request));
     }
 
     /**
@@ -93,7 +93,7 @@ public class SqlServlet extends BaseServlet {
      * @param response
      */
     public void addData(HttpServletRequest request, HttpServletResponse response) {
-        service.addData(request);
+        commonService.addData(request,GetUserId.getUserId(request));
     }
 
     /**
@@ -102,7 +102,7 @@ public class SqlServlet extends BaseServlet {
      * @param response
      */
     public void deleteData(HttpServletRequest request, HttpServletResponse response) {
-        service.deleteData(request);
+        commonService.deleteData(request,GetUserId.getUserId(request));
     }
 
     /**
@@ -111,7 +111,7 @@ public class SqlServlet extends BaseServlet {
      * @param response
      */
     public void updateData(HttpServletRequest request, HttpServletResponse response) {
-        service.updateData(request);
+        commonService.updateData(request,GetUserId.getUserId(request));
     }
 
     /**
@@ -121,6 +121,6 @@ public class SqlServlet extends BaseServlet {
      * @return
      */
     public Object parseSql(HttpServletRequest request, HttpServletResponse response) throws JSQLParserException {
-        return service.parseSql(request);
+        return commonService.parseSql(request,GetUserId.getUserId(request));
     }
 }

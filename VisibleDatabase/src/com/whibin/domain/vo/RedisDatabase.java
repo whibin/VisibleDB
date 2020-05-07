@@ -12,5 +12,8 @@ import java.util.Map;
  */
 @Data
 public class RedisDatabase implements Serializable {
+    /**
+     * 对应键和值
+     */
     private Map<String, String> data;
 }

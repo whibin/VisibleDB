@@ -10,6 +10,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 
 public class GetUserId {
+    /**
+     * 获取用户自己的id
+     * @param request
+     * @return
+     */
     public static String getUserId(HttpServletRequest request) {
         for (Cookie cookie : request.getCookies()) {
             if ("userId".equals(cookie.getName())) {
@@ -19,6 +24,11 @@ public class GetUserId {
         return null;
     }
 
+    /**
+     * 获取用户需要访问的用户的id
+     * @param request
+     * @return
+     */
     public static String getOtherUserId(HttpServletRequest request) {
         for (Cookie cookie : request.getCookies()) {
             if ("OtherUserId".equals(cookie.getName())) {

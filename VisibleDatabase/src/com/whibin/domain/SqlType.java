@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 public enum SqlType implements Serializable {
     /**
+     * 解析sql语句的类型
      * 分别对应增删查改
      */
     SELECT,

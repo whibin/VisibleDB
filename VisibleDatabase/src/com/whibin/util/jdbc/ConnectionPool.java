@@ -1,8 +1,5 @@
 package com.whibin.util.jdbc;
 
-import com.whibin.util.LoadDriver;
-import com.whibin.util.PropertiesUtil;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;

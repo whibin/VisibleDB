@@ -7,6 +7,7 @@ import com.whibin.domain.vo.ResultInfo;
 import com.whibin.service.UserService;
 import com.whibin.util.BeanUtil;
 import com.whibin.util.GetUserId;
+import com.whibin.util.ShaEncode;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -49,7 +50,8 @@ public class UserServiceImpl implements UserService {
         }
         // 在数据库中判断用户名密码是否正确
         User user = dao.get(parameterMap.get("username")[0]);
-        if (user == null || !user.getPassword().equals(parameterMap.get("password")[0])) {
+        // 记得进行加密
+        if (user == null || !user.getPassword().equals(ShaEncode.shaEncode(parameterMap.get("password")[0]))) {
             System.out.println("Username or Password incorrect!");
             session.setAttribute("message","Username or Password incorrect!");
             return false;
@@ -62,6 +64,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Object checkUsername(String username) {
+        // 在数据库中查找用户名是否存在
         if (dao.get(username) == null) {
             return new ResultInfo(false,null,null);
         }
@@ -90,6 +93,7 @@ public class UserServiceImpl implements UserService {
         }
         // 存储用户信息
         User user = new User();
+        parameterMap.get("password")[0] = ShaEncode.shaEncode(parameterMap.get("password")[0]);
         BeanUtil.populateParameter(user,parameterMap);
         dao.save(user);
         session.setAttribute("message","Register Success! Please login");
@@ -109,6 +113,10 @@ public class UserServiceImpl implements UserService {
         for (FileItem fileItem : fileItems) {
             // 如果是普通字段
             if (fileItem.isFormField()) {
+                if ("password".equals(fileItem.getFieldName())) {
+                    map.put(fileItem.getFieldName(),ShaEncode.shaEncode(fileItem.getString()));
+                    continue;
+                }
                 map.put(fileItem.getFieldName(),fileItem.getString());
                 continue;
             }
@@ -146,6 +154,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getInformation(HttpServletRequest request) {
         HttpSession session = request.getSession();
+        // 获取用户的基本信息并返回
         String id = GetUserId.getUserId(request);
         Object user = session.getAttribute("user" + id);
         if (user == null) {

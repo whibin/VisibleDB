@@ -12,5 +12,8 @@ import java.util.Map;
  */
 @Data
 public class Database implements Serializable {
+    /**
+     * 表名对应一个具体的表实体
+     */
     private Map<String, Table> tableMap;
 }

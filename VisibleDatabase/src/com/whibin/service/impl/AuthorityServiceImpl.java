@@ -92,9 +92,11 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public void removeRequest(String userId, String rejectId, String realPath) throws IOException, ClassNotFoundException {
+        // 拼接路径
         String path = realPath + "/" + "sendRequest-r" + userId + ".txt";
         ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(path));
         List<UserDatabase> userDatabases = (List<UserDatabase>) inputStream.readObject();
+        // 从请求队列的文件中删除该请求
         for (int i = 0; i < userDatabases.size(); i++) {
             if (userDatabases.get(i).getUser().getId().equals(Long.valueOf(rejectId))) {
                 userDatabases.remove(i);
@@ -120,6 +122,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Override
     public void updateAuthority(UserDatabase user, String newAuthority, String username) {
         Map<String, String> authority = user.getAuthority();
+        // 重置新的权限
         authority.put(username,newAuthority);
     }
 

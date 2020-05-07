@@ -10,7 +10,7 @@
     <script src="js/jquery-3.5.0.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.form.js"></script>
-    <script src="js/websocket.js"></script>
+    <script src="js/websocket-sql.js"></script>
     <style>
         h1 {
             text-align: center;
@@ -31,12 +31,9 @@
             }
         }
         $(function () {
-            setInterval(function () {
-                $("tr:gt(0)").remove();
-                websocket.send("GET");
-            },5000);
             websocket.onmessage = function(event) {
                 $(".container").hide();
+                $("tr:gt(0)").remove();
                 show(event.data);
                 $(".container").fadeIn("slow");
             }
@@ -63,10 +60,20 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="admin-information.html">Personal Information</a></li>
-                    <li><a href="admin.html">Database</a></li>
+                    <li><a href="admin.html">User Database</a></li>
                     <li><a href="admin-authority.html">authority</a></li>
                     <li><a href="SqlStatus.html">Sql Database Status</a></li>
                     <li><a href="RedisListen.html">Redis Database Listen</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Normal User Operation <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="sql.html">Enter sql Database</a></li>
+                            <li><a href="redis.html">Enter redis Database</a></li>
+                            <li><a href="authority.html">Command my database authorities</a></li>
+                            <li><a href="operableDatabase.html">Go to operable databases</a></li>
+                            <li><a href="otherUsers.html">Other users</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
@@ -75,7 +82,10 @@
 <h1>User Database</h1>
 <div class="container">
     <table class="table table-bordered table-hover" id="ope">
-        <tr></tr>
+        <tr>
+            <th>Database Name</th>
+            <th>Status</th>
+        </tr>
     </table>
 </div>
 </body>

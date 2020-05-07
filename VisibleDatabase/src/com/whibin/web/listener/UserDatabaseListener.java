@@ -19,8 +19,13 @@ import java.util.List;
 @WebListener()
 public class UserDatabaseListener implements ServletContextListener,
         HttpSessionListener, HttpSessionAttributeListener {
-
+    /**
+     * 用户文件数据的真实路径
+     */
     private String realPath;
+    /**
+     * 存储用户数据的集合
+     */
     private List<UserDatabase> userDatabases = new ArrayList<>();
 
     // Public constructor is required by servlet spec
@@ -46,6 +51,7 @@ public class UserDatabaseListener implements ServletContextListener,
                 UserDatabase o = (UserDatabase) inputStream.readObject();
                 userDatabases.add(o);
             } catch (IOException | ClassNotFoundException e) {
+                // 若读取不到，则说明没有该文件，跳过即可
                 continue;
             }
         }

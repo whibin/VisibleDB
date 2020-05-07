@@ -11,22 +11,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Description: Websocket
+ * @Description: 实时监听sql数据库更新状态的websocket
  * @author whibin
  */
 @ServerEndpoint("/websocket")
 public class SqlStatusWebSocket {
+    /**
+     * 文件存放路径
+     */
     String path = "F:/MyJavaProject/QG_Assessment/VisibleDatabase/out/artifacts/VisibleDatabase_war_exploded/UserData/SqlMessage.txt";
-
-    @OnOpen
-    public void onOpen(Session session) throws ClassNotFoundException {
-
-    }
-
-    @OnClose
-    public void onClose() throws IOException {
-
-    }
 
     /**
      * 监听更新信息
@@ -43,22 +36,12 @@ public class SqlStatusWebSocket {
         } catch (IOException | ClassNotFoundException e) {
             // 若出异常，则说明找不到。不做任何处理
         }
-        // 判断是否要显示数据
-        if ("GET".equals(message)) {
-            System.out.println("收到显示数据的请求");
-            if (messages != null) {
-                // 以json格式发出
-                ObjectMapper mapper = new ObjectMapper();
-                String s = mapper.writeValueAsString(messages);
-                session.getAsyncRemote().sendText(s);
-            }
-            return;
-        }
         System.out.println("监听到数据库更新");
         // 若是存储数据，解析
         if (messages == null) {
             messages = new HashMap<>();
         }
+        // 解析固定的格式
         String[] split = message.split("-");
         String databaseName = split[0];
         String msg = split[1];

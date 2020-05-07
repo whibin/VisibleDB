@@ -110,6 +110,7 @@ public class SqlParser {
     }
 
     private static List<String> getSelectFields(String sql) throws JSQLParserException {
+        // 获取select语句的的字段
         Select stmt = (Select) CCJSqlParserUtil.parse(sql);
         List<String> list = new ArrayList<>();
         for (SelectItem selectItem : ((PlainSelect)stmt.getSelectBody()).getSelectItems()) {
@@ -124,6 +125,7 @@ public class SqlParser {
     }
 
     private static String getTableName(String sql, SqlType type) throws JSQLParserException {
+        // 获取表名
         switch (type) {
             case SELECT:
                 return new TablesNamesFinder().getTableList((Select) CCJSqlParserUtil.parse(sql)).get(0);
@@ -139,6 +141,7 @@ public class SqlParser {
     }
 
     private static List<String> getUpdateFields(String sql) throws JSQLParserException {
+        // 获取update语句的字段
         Update stmt = (Update) CCJSqlParserUtil.parse(sql);
         List<String> fields = new ArrayList<>();
         for (Column column : stmt.getColumns()) {
@@ -148,6 +151,7 @@ public class SqlParser {
     }
 
     private static List<String> getInsertFields(String sql) throws JSQLParserException {
+        // 获取insert语句的字段
         Insert stmt = (Insert) CCJSqlParserUtil.parse(sql);
         List<String> fields = new ArrayList<>();
         List<Column> columns = stmt.getColumns();
@@ -162,6 +166,7 @@ public class SqlParser {
     }
 
     private static String getSelectWhere(String sql) throws JSQLParserException {
+        // 获取select语句的where条件
         Select stmt = (Select) CCJSqlParserUtil.parse(sql);
         Expression where = ((PlainSelect) stmt.getSelectBody()).getWhere();
         if (where == null) {
@@ -171,6 +176,7 @@ public class SqlParser {
     }
 
     private static List<String> getInsertFieldValue(String sql) throws JSQLParserException {
+        // 获取insert语句插入的值
         Insert stmt = (Insert) CCJSqlParserUtil.parse(sql);
         String[] itemsList = stmt.getItemsList().toString().replaceAll(" ","").split(",");
         System.out.println(Arrays.toString(itemsList));
@@ -191,6 +197,7 @@ public class SqlParser {
     }
 
     private static List<String> getUpdateFieldValue(String sql) throws JSQLParserException {
+        // 获取update语句要修改的值
         Update stmt = (Update) CCJSqlParserUtil.parse(sql);
         List<Expression> expressions = stmt.getExpressions();
         List<String> fieldValues = new ArrayList<>();

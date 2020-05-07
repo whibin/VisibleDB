@@ -13,6 +13,12 @@ import java.util.Map;
  */
 @Data
 public class Table implements Serializable {
+    /**
+     * 字段名对应字段类型
+     */
     private Map<String, String> fieldType;
+    /**
+     * 字段名对应一列该字段的数据
+     */
     private Map<String, List<String>> data;
 }

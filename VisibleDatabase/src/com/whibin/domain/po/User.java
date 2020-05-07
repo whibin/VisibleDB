@@ -16,5 +16,8 @@ public class User implements Serializable {
     private Long id;
     private String username;
     private String password;
+    /**
+     * 图片路径
+     */
     private String icon;
 }
