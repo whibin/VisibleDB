@@ -1,18 +1,9 @@
 package com.whibin.web.websocket;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.whibin.domain.vo.RedisDatabase;
-import com.whibin.domain.vo.UserDatabase;
 import com.whibin.web.websocket.thread.RedisThread;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author whibin

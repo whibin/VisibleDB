@@ -13,7 +13,6 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -137,7 +136,7 @@ public class UserServiceImpl implements UserService {
             String path = realPath + "/" + id + suffix;
             FileOutputStream outputStream = new FileOutputStream(path);
             byte[] flush = new byte[1024];
-            int len = -1;
+            int len;
             while ((len = inputStream.read(flush)) != -1) {
                 outputStream.write(flush,0,len);
             }

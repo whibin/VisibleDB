@@ -1,9 +1,4 @@
 package com.whibin.web.listener;
-/**
- * @author whibin
- * @date 2020/5/4 23:39
- * @Description: 用于加载用户数据的资源
- */
 
 import com.whibin.domain.vo.UserDatabase;
 import com.whibin.util.jdbc.PropertiesUtil;
@@ -16,6 +11,12 @@ import javax.servlet.http.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * @author whibin
+ * @date 2020/5/4 23:39
+ * @Description: 用于加载用户数据的资源
+ */
 
 @WebListener()
 public class UserDatabaseListener implements ServletContextListener,
@@ -53,7 +54,6 @@ public class UserDatabaseListener implements ServletContextListener,
                 userDatabases.add(o);
             } catch (IOException | ClassNotFoundException e) {
                 // 若读取不到，则说明没有该文件，跳过即可
-                continue;
             }
         }
     }
@@ -107,7 +107,7 @@ public class UserDatabaseListener implements ServletContextListener,
                 continue;
             }
             // 若找得到则把数据写入文件
-            ObjectOutputStream outputStream = null;
+            ObjectOutputStream outputStream;
             try {
                 outputStream = new ObjectOutputStream(new FileOutputStream(realPath+"/userDatabase"+i+".txt"));
                 outputStream.writeObject(attribute);
@@ -144,7 +144,7 @@ public class UserDatabaseListener implements ServletContextListener,
             // 若找得到
             UserDatabase userDatabase = (UserDatabase) attribute;
             // 把该数据写到文件
-            ObjectOutputStream outputStream = null;
+            ObjectOutputStream outputStream;
             try {
                 outputStream = new ObjectOutputStream(new FileOutputStream(realPath+"/userDatabase"+i+".txt"));
                 outputStream.writeObject(userDatabase);

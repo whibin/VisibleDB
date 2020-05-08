@@ -11,12 +11,12 @@ import com.whibin.util.jdbc.JDBCUtil;
  */
 
 public class UserDaoImpl implements UserDao {
-    private JDBCUtil template = new JDBCUtil(User.class, null);
+    private JDBCUtil<User> template = new JDBCUtil<>(User.class, null);
 
     @Override
     public User get(String username) {
         String sql = "select id,username,password,icon from user where username=?";
-        return (User) template.queryForSingle(sql, username);
+        return template.queryForSingle(sql, username);
     }
 
     @Override
@@ -34,6 +34,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User get(Integer id) {
         String sql = "select id,username,password,icon from user where id=?";
-        return (User) template.queryForSingle(sql, id);
+        return template.queryForSingle(sql, id);
     }
 }

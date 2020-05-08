@@ -1,6 +1,5 @@
 package com.whibin.service.impl;
 
-import com.whibin.domain.po.User;
 import com.whibin.domain.vo.UserDatabase;
 import com.whibin.service.AuthorityService;
 import com.whibin.util.GetUserId;

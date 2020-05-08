@@ -690,7 +690,7 @@ public class DatabaseCommonServiceImpl implements DatabaseCommonService {
     }
 
     private void addData(Table table, String[] data) {
-        Map<String, List<String>> tableData = table.getData();
+        Map<String, List<String>> tableData;
         // 判断tableData是否存在，若不存在则新建
         newTableDataWhenNull(table);
         tableData = table.getData();
