@@ -8,10 +8,7 @@ import com.whibin.util.jdbc.PropertiesUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author whibin
@@ -47,11 +44,11 @@ public class AuthorityServiceImpl implements AuthorityService {
     public void saveSentRequest(UserDatabase receiver, UserDatabase initiator, String realPath) {
         // 拼接路径字符串
         String path = realPath + "/" + "sendRequest-r" + receiver.getUser().getId() + ".txt";
-        List<UserDatabase> initiators;
+        Set<UserDatabase> initiators;
         try {
             // 从文件中读取出集合
             ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(path));
-            initiators = (List<UserDatabase>) inputStream.readObject();
+            initiators = (Set<UserDatabase>) inputStream.readObject();
             initiators.add(initiator);
             ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(path));
             outputStream.writeObject(initiators);
@@ -61,7 +58,7 @@ public class AuthorityServiceImpl implements AuthorityService {
             try {
                 ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(path));
                 // 创建新的集合
-                initiators = new ArrayList<>();
+                initiators = new HashSet<>();
                 // 将发起者添加到集合中
                 initiators.add(initiator);
                 // 写入文件
@@ -80,8 +77,9 @@ public class AuthorityServiceImpl implements AuthorityService {
         try {
             ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(path));
             // 读取文件数据并返回
-            return (List<UserDatabase>) inputStream.readObject();
+            return inputStream.readObject();
         } catch (IOException e) {
+            e.printStackTrace();
             // 捕获到异常，说明没有接收到请求
             return null;
         } catch (ClassNotFoundException e) {
@@ -95,7 +93,7 @@ public class AuthorityServiceImpl implements AuthorityService {
         // 拼接路径
         String path = realPath + "/" + "sendRequest-r" + userId + ".txt";
         ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(path));
-        List<UserDatabase> userDatabases = (List<UserDatabase>) inputStream.readObject();
+        List<UserDatabase> userDatabases = new ArrayList<>((Set<UserDatabase>) inputStream.readObject());
         // 从请求队列的文件中删除该请求
         for (int i = 0; i < userDatabases.size(); i++) {
             if (userDatabases.get(i).getUser().getId().equals(Long.valueOf(rejectId))) {

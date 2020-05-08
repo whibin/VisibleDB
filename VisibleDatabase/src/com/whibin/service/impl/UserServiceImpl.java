@@ -13,6 +13,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -33,7 +34,37 @@ public class UserServiceImpl implements UserService {
     private UserDao dao = new UserDaoImpl();
 
     @Override
-    public Boolean login(HttpServletRequest request, HttpServletResponse response) {
+    public Boolean cookieLogin(HttpServletRequest request) {
+        String username = null;
+        String password = null;
+        for (Cookie cookie : request.getCookies()) {
+            if ("username".equals(cookie.getName())) {
+                username = cookie.getValue();
+            }
+            if ("password".equals(cookie.getName())) {
+                password = cookie.getValue();
+            }
+        }
+        HttpSession session = request.getSession();
+        // 若cookie中找不到，则返回false
+        if (username == null || password == null) {
+            session.setAttribute("message","Login information expired!");
+            return false;
+        }
+        // 在数据库中判断用户名密码是否正确
+        User user = dao.get(username);
+        if (user == null || !user.getPassword().equals(password)) {
+            session.setAttribute("message","Login information expired!");
+            return false;
+        }
+        // 若均正确
+        session.setAttribute("user",user);
+        System.out.println(user.getId());
+        return true;
+    }
+
+    @Override
+    public Boolean login(HttpServletRequest request) {
         Map<String, String[]> parameterMap = request.getParameterMap();
         HttpSession session = request.getSession();
         // 判断验证码是否正确
@@ -49,7 +80,6 @@ public class UserServiceImpl implements UserService {
         }
         // 在数据库中判断用户名密码是否正确
         User user = dao.get(parameterMap.get("username")[0]);
-        // 记得进行加密
         if (user == null || !user.getPassword().equals(ShaEncode.shaEncode(parameterMap.get("password")[0]))) {
             System.out.println("Username or Password incorrect!");
             session.setAttribute("message","Username or Password incorrect!");

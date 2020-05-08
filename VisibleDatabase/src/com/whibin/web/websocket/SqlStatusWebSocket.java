@@ -19,7 +19,7 @@ public class SqlStatusWebSocket {
     /**
      * 文件存放路径
      */
-    String path = Path.PATH + "/UserData/SqlMessage.txt";
+    String path = Path.PATH + "/SqlMessage.txt";
 
     /**
      * 监听更新信息
@@ -38,7 +38,7 @@ public class SqlStatusWebSocket {
             // 若出异常，则说明找不到。不做任何处理
         }
         System.out.println("监听到数据库更新");
-        // 若是存储数据，解析
+        // 存储数据，解析
         if (messages == null) {
             messages = new HashMap<>();
         }

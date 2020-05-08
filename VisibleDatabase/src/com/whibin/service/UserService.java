@@ -21,7 +21,14 @@ public interface UserService {
      * @param request
      * @return
      */
-    Boolean login(HttpServletRequest request, HttpServletResponse response);
+    Boolean login(HttpServletRequest request);
+
+    /**
+     * 使用cookie登录
+     * @param request
+     * @return
+     */
+    Boolean cookieLogin(HttpServletRequest request);
 
     /**
      * 检查用户名是否存在

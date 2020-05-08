@@ -1,5 +1,6 @@
 package com.whibin.web.servlet;
 
+import com.whibin.constant.Path;
 import com.whibin.domain.po.User;
 import com.whibin.domain.vo.ResultInfo;
 import com.whibin.service.UserService;
@@ -27,8 +28,28 @@ public class UserServlet extends BaseServlet {
      * @return
      */
     public Object login(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Path.PATH = request.getServletContext().getRealPath("UserData");
         // 获取参数
-        if (service.login(request, response)) {
+        if (service.login(request)) {
+            User user = (User) request.getSession().getAttribute("user");
+            if ("whibin".equals(user.getUsername())) {
+                return new ResultInfo(true,"admin",user);
+            }
+            return new ResultInfo(true,null,user);
+        }
+        return new ResultInfo(false,null,null);
+    }
+
+    /**
+     * 登录
+     * @param request
+     * @param response
+     * @return
+     */
+    public Object cookieLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Path.PATH = request.getServletContext().getRealPath("UserData");
+        // 获取参数
+        if (service.cookieLogin(request)) {
             String id = String.valueOf(((User) request.getSession().getAttribute("user")).getId());
             if ("whibin".equals(((User) request.getSession().getAttribute("user")).getUsername())) {
                 return new ResultInfo(true,"admin",id);

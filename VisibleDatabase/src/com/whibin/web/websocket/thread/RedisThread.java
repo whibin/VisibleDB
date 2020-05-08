@@ -21,10 +21,6 @@ import java.util.Map;
  */
 
 public class RedisThread implements Runnable {
-    /**
-     * 存放文件的路径
-     */
-    private String path = Path.PATH + "/UserData";
 
     private Session session;
     /**
@@ -68,7 +64,7 @@ public class RedisThread implements Runnable {
     private Map<String, Map<String, Map<String, String>>> readData() {
         Map<String, Map<String, Map<String, String>>> data = new HashMap<>();
         for (int i = 1; i <= Integer.parseInt(PropertiesUtil.getValue("maxActive")); i++) {
-            String text = path + "/userDatabase" + i + ".txt";
+            String text = Path.PATH + "/userDatabase" + i + ".txt";
             try {
                 // 从文件中读出
                 inputStream = new ObjectInputStream(new FileInputStream(text));

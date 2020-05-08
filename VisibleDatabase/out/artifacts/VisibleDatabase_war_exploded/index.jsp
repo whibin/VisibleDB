@@ -128,6 +128,24 @@
             document.cookie = name + "=" + escape(value);
         }
         $(function () {
+            $("#withCookie").click(function () {
+                $.get(
+                    "userServlet/cookieLogin",
+                    {},
+                    function jump(resultInfo) {
+                        if (resultInfo.status) {
+                            setCookie("userId",resultInfo.data);
+                            if (resultInfo.message == "admin") {
+                                location.href = "${pageContext.request.contextPath}/admin.html"
+                            } else {
+                                location.href = "${pageContext.request.contextPath}/sql.html"
+                            }
+                        } else {
+                            location.href = "${pageContext.request.contextPath}/index.jsp"
+                        }
+                    }
+                )
+            })
             var options = {
                 success: jump,
                 url: "userServlet/login",
@@ -136,7 +154,9 @@
             }
             function jump(resultInfo) {
                 if (resultInfo.status) {
-                    setCookie("userId",resultInfo.data);
+                    setCookie("username",resultInfo.data.username);
+                    setCookie("password",resultInfo.data.password);
+                    setCookie("userId",resultInfo.data.id);
                     if (resultInfo.message == "admin") {
                         location.href = "${pageContext.request.contextPath}/admin.html"
                     } else {
@@ -162,6 +182,7 @@
         <img src="${pageContext.request.contextPath}/code" id="check">
         <input type="text" required placeholder="Verification Code" name="code" id="CheckCodeInput"/>
         <button class="but" type="sumbit">Sign in</button>
+        <button class="but" type="button" style="margin-top: 10px" id="withCookie">Sign in with cookie</button>
     </form>
     <a href="register.jsp">No Account? click to Register</a>
 </div>

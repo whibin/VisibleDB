@@ -21,7 +21,7 @@ public class SqlThread implements Runnable {
     /**
      * 文件存放路径
      */
-    private String path = Path.PATH + "/UserData/SqlMessage.txt";
+    private String path = Path.PATH + "/SqlMessage.txt";
 
     private Session session;
     /**

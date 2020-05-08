@@ -11,7 +11,6 @@
     <script src="js/jquery-3.5.0.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/Sakura.js"></script>
-    <script src="js/UpdateCode.js"></script>
     <style>
         html {
             width: 100%;
@@ -57,6 +56,10 @@
             return true;
         }
         $(function () {
+            let element = document.getElementById("check");
+            element.onclick = function () {
+                element.src = "/VisibleDatabase_war_exploded/code?a=" + new Date().getTime();
+            }
             $("#username").blur(function () {
                 $.get(
                     "userServlet/checkUsername",
