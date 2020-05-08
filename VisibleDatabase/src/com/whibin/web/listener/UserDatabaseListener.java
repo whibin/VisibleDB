@@ -6,6 +6,7 @@ package com.whibin.web.listener;
  */
 
 import com.whibin.domain.vo.UserDatabase;
+import com.whibin.util.jdbc.PropertiesUtil;
 import lombok.SneakyThrows;
 
 import javax.servlet.ServletContextEvent;
@@ -45,7 +46,7 @@ public class UserDatabaseListener implements ServletContextListener,
         System.out.println("Servlet Context was initialized");
         realPath = sce.getServletContext().getRealPath("UserData");
         // 把文件中的数据读出来
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= Integer.parseInt(PropertiesUtil.getValue("maxActive")); i++) {
             try {
                 ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(realPath + "/userDatabase"+i+".txt"));
                 UserDatabase o = (UserDatabase) inputStream.readObject();
@@ -99,7 +100,7 @@ public class UserDatabaseListener implements ServletContextListener,
          is added to a session.
       */
         HttpSession session = sbe.getSession();
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= Integer.parseInt(PropertiesUtil.getValue("maxActive")); i++) {
             // 若找不到该数据，则跳过
             Object attribute = session.getAttribute("userDatabase" + i);
             if (attribute == null) {
@@ -134,7 +135,7 @@ public class UserDatabaseListener implements ServletContextListener,
       */
         System.out.println("Attributed was replaced");
         HttpSession session = sbe.getSession();
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= Integer.parseInt(PropertiesUtil.getValue("maxActive")); i++) {
             // 若找不到该数据，则跳过
             Object attribute = session.getAttribute("userDatabase" + i);
             if (attribute == null) {

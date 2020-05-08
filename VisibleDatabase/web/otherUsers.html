@@ -22,9 +22,9 @@
                 {},
                 function (userDatabases) {
                     for (let i = 0; i < userDatabases.length; i++) {
-                        $("#table").append("<tr></tr>")
-                        $("tr:last").append("<td>"+userDatabases[i].user.username+"</td>").append("<td><button type='button' class='btn btn-primary' id='send'>Send request</button></td>")
-                        $("#send").click(function () {
+                        $("#table").append("<tr></tr>");
+                        $("tr:last").append("<td>"+userDatabases[i].user.username+"</td>").append("<td><button type='button' class='btn btn-primary' id='send"+i+"'>Send request</button></td>")
+                        $("#send"+i).click(function () {
                             $.get(
                                 "authorityServlet/sendRequest",
                                 {receiver: userDatabases[i].user.id},

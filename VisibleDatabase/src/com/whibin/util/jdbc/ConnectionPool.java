@@ -50,14 +50,12 @@ public class ConnectionPool implements DIYConnectionPool {
         if (activePool.size() < Integer.parseInt(PropertiesUtil.getValue("maxActive")) ) {
             if (freePool.size() > 0 ) {
                 connection = freePool.remove(0);
-            }
-            else {  // 空池里没有，就新创建一个对象
+            }  else {  // 空池里没有，就新创建一个对象
                 connection = newConnection();
             }
             if ( isAvailable(connection) ) {
                 activePool.add(connection);
-            }
-            else {
+            } else {
                 connection = getConnection();
             }
         }

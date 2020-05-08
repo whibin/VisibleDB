@@ -1,4 +1,4 @@
-package com.whibin.domain;
+package com.whibin.constant;
 
 import java.io.Serializable;
 

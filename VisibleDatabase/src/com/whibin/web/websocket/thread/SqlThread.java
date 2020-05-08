@@ -2,6 +2,7 @@ package com.whibin.web.websocket.thread;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.whibin.constant.Path;
 
 import javax.websocket.Session;
 import java.io.FileInputStream;
@@ -20,7 +21,7 @@ public class SqlThread implements Runnable {
     /**
      * 文件存放路径
      */
-    private String path = "F:/MyJavaProject/QG_Assessment/VisibleDatabase/out/artifacts/VisibleDatabase_war_exploded/UserData/SqlMessage.txt";
+    private String path = Path.PATH + "/UserData/SqlMessage.txt";
 
     private Session session;
     /**

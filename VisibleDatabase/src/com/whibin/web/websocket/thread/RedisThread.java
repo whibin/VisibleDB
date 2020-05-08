@@ -2,8 +2,10 @@ package com.whibin.web.websocket.thread;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.whibin.constant.Path;
 import com.whibin.domain.vo.RedisDatabase;
 import com.whibin.domain.vo.UserDatabase;
+import com.whibin.util.jdbc.PropertiesUtil;
 
 import javax.websocket.Session;
 import java.io.FileInputStream;
@@ -22,7 +24,7 @@ public class RedisThread implements Runnable {
     /**
      * 存放文件的路径
      */
-    private String path = "F:/MyJavaProject/QG_Assessment/VisibleDatabase/out/artifacts/VisibleDatabase_war_exploded/UserData";
+    private String path = Path.PATH + "/UserData";
 
     private Session session;
     /**
@@ -65,7 +67,7 @@ public class RedisThread implements Runnable {
      */
     private Map<String, Map<String, Map<String, String>>> readData() {
         Map<String, Map<String, Map<String, String>>> data = new HashMap<>();
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= Integer.parseInt(PropertiesUtil.getValue("maxActive")); i++) {
             String text = path + "/userDatabase" + i + ".txt";
             try {
                 // 从文件中读出

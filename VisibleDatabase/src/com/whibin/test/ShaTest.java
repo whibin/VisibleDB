@@ -15,7 +15,7 @@ public class ShaTest {
      * 加密解密
      */
     @Test
-    public void encryptBASE64() {
+    public void test() {
         String s = shaEncode("123456");
         System.out.println(s);
     }

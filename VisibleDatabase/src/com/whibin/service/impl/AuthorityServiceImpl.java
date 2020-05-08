@@ -4,6 +4,7 @@ import com.whibin.domain.po.User;
 import com.whibin.domain.vo.UserDatabase;
 import com.whibin.service.AuthorityService;
 import com.whibin.util.GetUserId;
+import com.whibin.util.jdbc.PropertiesUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,7 +26,7 @@ public class AuthorityServiceImpl implements AuthorityService {
         // 创建集合，用来放用户的数据
         List<UserDatabase> list = new ArrayList<>();
         // 获取用户
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= Integer.parseInt(PropertiesUtil.getValue("maxActive")); i++) {
             // 排除自己
             if (GetUserId.getUserId(request).equals(String.valueOf(i))) {
                 continue;
@@ -134,7 +135,7 @@ public class AuthorityServiceImpl implements AuthorityService {
         UserDatabase userNow = (UserDatabase) session.getAttribute("userDatabase" + id);
         List<UserDatabase> list = new ArrayList<>();
         // 遍历所有用户的权限列表
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= Integer.parseInt(PropertiesUtil.getValue("maxActive")); i++) {
             // 若是自己就跳过
             if (id.equals(String.valueOf(i))) {
                 continue;

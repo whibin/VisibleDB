@@ -9,7 +9,7 @@ import java.sql.Connection;
 public interface DIYConnectionPool {
     /**
      * 获取连接对象
-     * @return 从线程池中获取数据库连接对象
+     * @return 从连接池中获取数据库连接对象
      */
     Connection getConnection();
 

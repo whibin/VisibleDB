@@ -2,21 +2,17 @@ package com.whibin.service.impl;
 
 import com.whibin.dao.UserDao;
 import com.whibin.dao.impl.UserDaoImpl;
-import com.whibin.domain.SqlType;
+import com.whibin.constant.SqlType;
 import com.whibin.domain.po.User;
 import com.whibin.domain.vo.*;
 import com.whibin.service.DatabaseCommonService;
-import com.whibin.util.GetUserId;
 import com.whibin.util.SqlParser;
 import net.sf.jsqlparser.JSQLParserException;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author whibin
@@ -404,11 +400,94 @@ public class DatabaseCommonServiceImpl implements DatabaseCommonService {
                 }
                 resultSet.put(field,result);
             }
+            // 判断是否有order
+            String field = sqlOrder(sql);
+            if (field != null) {
+                // 解析字符串
+                String[] split = field.split("-");
+                String orderField = split[0];
+                String orderManner = split[1];
+                // 从结果集中获取该字段的数据
+                List<String> list = resultSet.get(orderField);
+                // 转为数组
+                String[] strings = list.toArray(new String[list.size()]);
+                // 进行排序
+                Arrays.sort(strings);
+                // 如果是降序，反转数组
+                if ("d".equals(orderManner)) {
+                    for(int i = 0; i < strings.length / 2; i++){
+                        String temp = strings[strings.length - i - 1];
+                        strings[strings.length -i - 1] = strings[i];
+                        strings[i] = temp;
+                    }
+                }
+                // 创建一个用于记录下标的数组
+                Integer[] index = new Integer[list.size()];
+                // 遍历数组，获取排序后的下标
+                for (int i = 0; i < strings.length; i++) {
+                    for (int j = 0; j < list.size(); j++) {
+                        if (strings[i].equals(list.get(j))) {
+                            index[j] = i;
+                        }
+                    }
+                }
+                for (Map.Entry<String, List<String>> entry : resultSet.entrySet()) {
+                    // 创建新的集合
+                    List<String> newResult = new ArrayList<>();
+                    // 获取旧的集合信息
+                    List<String> oldResult = entry.getValue();
+                    // 添加进集合
+                    for (int X = 0; X < oldResult.size(); X++) {
+                        for (int i = 0; i < oldResult.size(); i++) {
+                            if (index[i] == X) {
+                                newResult.add(index[i],oldResult.get(i));
+                                break;
+                            }
+                        }
+                    }
+                    // 覆盖原来的数据
+                    entry.setValue(newResult);
+                }
+            }
             return resultSet;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private String sqlOrder(String sql) {
+        sql = sql.toLowerCase().trim();
+        // 获取order的字段以及方式
+        if (!sql.contains("order")) {
+            // 若不包含order
+            return null;
+        }
+        String orderBy;
+        try {
+            // 获取by以后的字符串
+            orderBy = sql.substring(sql.indexOf("by"));
+        } catch (Exception e) {
+            // 若出现异常，则说明sql的order语法错误
+            return null;
+        }
+        // 获取排序的字段
+        String field = orderBy.substring(orderBy.indexOf(" ") + 1);
+        // 如果包含空格，说明有desc或asc的存在
+        if (field.contains(" ")) {
+            String manner = field.substring(field.indexOf(" ") + 1);
+            if ("desc".equals(manner)) {
+                // 说明是降序排序
+                // d代表降序
+                return field.substring(0,field.indexOf(" ")) + "-d";
+            }
+            // 说明是升序排序
+            if ("asc".equals(manner)) {
+                return field.substring(0,field.indexOf(" ")) + "-a";
+            }
+        }
+        // 默认为升序排序
+        return field + "-a";
     }
 
     private Integer getDataSize(Map<String, List<String>> data) {
@@ -424,24 +503,61 @@ public class DatabaseCommonServiceImpl implements DatabaseCommonService {
         if (condition == null) {
             return null;
         }
-        // 把空格去掉
         condition = condition.replaceAll(" ","");
-        // 根据 = 来取出键和值
-        String[] split = condition.split("=");
-        String key = split[0];
-        String value = split[1];
-        // 获取数据
-        Map<String, List<String>> data = table.getData();
-        // 通过键获取其对应的值的集合
-        List<String> list = data.get(key);
-        List<String> ids = new ArrayList<>();
-        // 遍历集合，找到该值对应的行数
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).equals(value)) {
-                ids.add(String.valueOf(i));
+        List<String> values = new ArrayList<>();
+        List<String> keys = new ArrayList<>();
+        // in查询
+        if (condition.contains("IN")) {
+            // 以IN作为分割
+            String[] ins = condition.split("IN");
+            // 获取值
+            keys.add(ins[0]);
+            // 去除括号
+            String s = ins[1].substring(1, ins[1].length() - 1);
+            // 若包含逗号，说明有多个值
+            if (s.contains(",")) {
+                // 以,做分割，添加进集合
+                String[] split = s.split(",");
+                Collections.addAll(values, split);
+            } else {
+                // 不包含，说明只有一个值
+                values.add(s);
             }
         }
-        return ids;
+        // 单条件查询
+        if (condition.contains("=")) {
+            // 把空格去掉
+            if (condition.contains("AND")) {
+                String[] ands = condition.split("AND");
+                // 根据 = 来取出键和值
+                String[] split = ands[0].split("=");
+                String[] split2 = ands[1].split("=");
+                keys.add(split[0]);
+                keys.add(split2[0]);
+                values.add(split[1]);
+                values.add(split2[1]);
+            } else {
+                String[] split = condition.split("=");
+                keys.add(split[0]);
+                values.add(split[1]);
+            }
+        }
+        // 获取数据
+        Map<String, List<String>> data = table.getData();
+        Set<String> ids = new HashSet<>();
+        for (String key : keys) {
+            // 通过键获取其对应的值的集合
+            List<String> list = data.get(key);
+            // 遍历集合，找到该值对应的行数
+            for (String value : values) {
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).equals(value)) {
+                        ids.add(String.valueOf(i));
+                    }
+                }
+            }
+        }
+        return new ArrayList<>(ids);
     }
 
     private Boolean deleteDataWithSql(Database database, String sql) {

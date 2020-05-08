@@ -1,6 +1,6 @@
 package com.whibin.web.websocket;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.whibin.constant.Path;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -19,7 +19,7 @@ public class SqlStatusWebSocket {
     /**
      * 文件存放路径
      */
-    String path = "F:/MyJavaProject/QG_Assessment/VisibleDatabase/out/artifacts/VisibleDatabase_war_exploded/UserData/SqlMessage.txt";
+    String path = Path.PATH + "/UserData/SqlMessage.txt";
 
     /**
      * 监听更新信息
@@ -28,6 +28,7 @@ public class SqlStatusWebSocket {
      */
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
+
         Map<String, List<String>> messages = null;
         try {
             ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(path));

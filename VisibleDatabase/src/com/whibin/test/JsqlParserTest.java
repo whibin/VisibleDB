@@ -39,6 +39,7 @@ public class JsqlParserTest {
         Expression where = ((PlainSelect) stmt.getSelectBody()).getWhere();
         System.out.println(where.toString().replaceAll(" ",""));
         System.out.println(list);
+
     }
 
     @Test
