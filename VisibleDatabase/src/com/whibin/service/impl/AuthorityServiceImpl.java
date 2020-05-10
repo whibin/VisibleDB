@@ -48,7 +48,7 @@ public class AuthorityServiceImpl implements AuthorityService {
         try {
             // 从文件中读取出集合
             ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(path));
-            initiators = (Set<UserDatabase>) inputStream.readObject();
+            initiators = new HashSet<>((ArrayList<UserDatabase>) inputStream.readObject());
             initiators.add(initiator);
             ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(path));
             outputStream.writeObject(initiators);

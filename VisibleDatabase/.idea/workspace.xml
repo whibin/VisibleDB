@@ -10,58 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="144502a9-fc4e-46e8-86a7-80eac9871dc2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/UserData/sendRequest-r5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/UserData/userDatabase5.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/UserData/sendRequest-r2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/UserData/sendRequest-r3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/UserData/sendRequest-r3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/UserData/SqlMessage.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/UserData/SqlMessage.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/UserData/userDatabase3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/UserData/userDatabase3.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/constant/Path.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/constant/Path.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/dao/impl/UserDaoImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/dao/impl/UserDaoImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/service/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/UserData/userDatabase5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/UserData/userDatabase5.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/service/impl/AuthorityServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/service/impl/AuthorityServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/service/impl/DatabaseCommonServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/service/impl/DatabaseCommonServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/service/impl/UserServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/filter/SafeFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/filter/SafeFilter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/listener/UserDatabaseListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/listener/UserDatabaseListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/servlet/AuthorityServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/servlet/AuthorityServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/servlet/UserServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/servlet/UserServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/websocket/RedisListenWebSocket.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/websocket/RedisListenWebSocket.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/websocket/SqlStatusWebSocket.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/websocket/SqlStatusWebSocket.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/websocket/thread/RedisThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/websocket/thread/RedisThread.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/websocket/thread/SqlThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/com/whibin/web/websocket/thread/SqlThread.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/datasource.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/WEB-INF/classes/datasource.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/js/UpdateCode.js" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/js/UpdateCode.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/register.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/VisibleDatabase_war_exploded/register.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/constant/Path.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/constant/Path.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/dao/impl/UserDaoImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/dao/impl/UserDaoImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/service/UserService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/service/impl/AuthorityServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/service/impl/AuthorityServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/service/impl/DatabaseCommonServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/service/impl/DatabaseCommonServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/service/impl/UserServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/filter/SafeFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/filter/SafeFilter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/listener/UserDatabaseListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/listener/UserDatabaseListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/servlet/AuthorityServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/servlet/AuthorityServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/servlet/UserServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/servlet/UserServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/websocket/RedisListenWebSocket.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/websocket/RedisListenWebSocket.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/websocket/SqlStatusWebSocket.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/websocket/SqlStatusWebSocket.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/websocket/thread/RedisThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/websocket/thread/RedisThread.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/websocket/thread/SqlThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/com/whibin/web/websocket/thread/SqlThread.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VisibleDatabase/datasource.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VisibleDatabase/datasource.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/whibin/constant/Path.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whibin/constant/Path.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/whibin/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whibin/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/whibin/service/impl/AuthorityServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whibin/service/impl/AuthorityServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/whibin/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whibin/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/whibin/web/servlet/AuthorityServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whibin/web/servlet/AuthorityServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/whibin/web/servlet/UserServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whibin/web/servlet/UserServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/whibin/web/websocket/SqlStatusWebSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whibin/web/websocket/SqlStatusWebSocket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/whibin/web/websocket/thread/RedisThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whibin/web/websocket/thread/RedisThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/whibin/web/websocket/thread/SqlThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whibin/web/websocket/thread/SqlThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/datasource.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/datasource.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/js/UpdateCode.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/js/UpdateCode.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/register.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/register.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -381,7 +336,9 @@
       <workItem from="1588272390208" duration="31646000" />
       <workItem from="1588389853282" duration="10639000" />
       <workItem from="1588413483824" duration="168727000" />
-      <workItem from="1588911998062" duration="28072000" />
+      <workItem from="1588911998062" duration="28218000" />
+      <workItem from="1588992983471" duration="5146000" />
+      <workItem from="1589010809016" duration="36973000" />
     </task>
     <task id="LOCAL-00001" summary="feat(com/whibin/service&amp;web): 实现了删除数据库、删除表、修改数据库的功能">
       <created>1588394374042</created>
@@ -474,7 +431,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588928253661</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="fix(com/whibin/service): 修复了用户无法获取到请求的bug">
+      <created>1588955343625</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1588955343625</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -507,7 +471,8 @@
     <MESSAGE value="feat(com/whibin/web): 新增了一些优化用户体验的功能&#10;style(com/whibin/web/service): 重新抽取、整改了一些代码" />
     <MESSAGE value="feat(com/whibin/service): 新增sql语句支持order、in、and关键字的功能" />
     <MESSAGE value="style(com/whibin/service): 在配置文件中添加用户数据存储的地址、从配置文件中引入最大连接数才动态决定用户的数量" />
-    <option name="LAST_COMMIT_MESSAGE" value="style(com/whibin/service): 在配置文件中添加用户数据存储的地址、从配置文件中引入最大连接数才动态决定用户的数量" />
+    <MESSAGE value="fix(com/whibin/service): 修复了用户无法获取到请求的bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix(com/whibin/service): 修复了用户无法获取到请求的bug" />
   </component>
   <component name="WindowStateProjectService">
     <state x="137" y="21" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588747135147">
@@ -534,10 +499,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="112" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1588662166214" />
-    <state x="268" y="0" key="CommitChangelistDialog2" timestamp="1588928252803">
+    <state x="99" y="0" key="CommitChangelistDialog2" timestamp="1588955339961">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="268" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1588928252803" />
+    <state x="99" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1588955339961" />
     <state width="415" height="466" key="DebuggerActiveHint" timestamp="1588921385215">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -546,70 +511,70 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="121" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1588858331995" />
-    <state width="1078" height="293" key="GridCell.Tab.0.bottom" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.0.bottom" timestamp="1589088711847">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.0.center" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1589088711847" />
+    <state width="1078" height="276" key="GridCell.Tab.0.center" timestamp="1589088711847">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.0.left" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1589088711847" />
+    <state width="1078" height="276" key="GridCell.Tab.0.left" timestamp="1589088711846">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.0.right" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1589088711846" />
+    <state width="1078" height="276" key="GridCell.Tab.0.right" timestamp="1589088711847">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.1.bottom" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1589088711847" />
+    <state width="1078" height="276" key="GridCell.Tab.1.bottom" timestamp="1589088711847">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.1.center" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1589088711847" />
+    <state width="1078" height="276" key="GridCell.Tab.1.center" timestamp="1589088711847">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.1.left" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1589088711847" />
+    <state width="1078" height="276" key="GridCell.Tab.1.left" timestamp="1589088711847">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.1.right" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1589088711847" />
+    <state width="1078" height="276" key="GridCell.Tab.1.right" timestamp="1589088711847">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.2.bottom" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1589088711847" />
+    <state width="1078" height="276" key="GridCell.Tab.2.bottom" timestamp="1589088711848">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.2.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.2.center" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.2.bottom/0.0.1366.728@0.0.1366.728" timestamp="1589088711848" />
+    <state width="1078" height="276" key="GridCell.Tab.2.center" timestamp="1589088711848">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.2.center/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.2.left" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.2.center/0.0.1366.728@0.0.1366.728" timestamp="1589088711848" />
+    <state width="1078" height="276" key="GridCell.Tab.2.left" timestamp="1589088711847">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.2.left/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.2.right" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.2.left/0.0.1366.728@0.0.1366.728" timestamp="1589088711847" />
+    <state width="1078" height="276" key="GridCell.Tab.2.right" timestamp="1589088711848">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.2.right/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.3.bottom" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.2.right/0.0.1366.728@0.0.1366.728" timestamp="1589088711848" />
+    <state width="1078" height="276" key="GridCell.Tab.3.bottom" timestamp="1589088711847">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.3.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.3.center" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.3.bottom/0.0.1366.728@0.0.1366.728" timestamp="1589088711847" />
+    <state width="1078" height="276" key="GridCell.Tab.3.center" timestamp="1589088711847">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.3.center/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.3.left" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.3.center/0.0.1366.728@0.0.1366.728" timestamp="1589088711847" />
+    <state width="1078" height="276" key="GridCell.Tab.3.left" timestamp="1589088711847">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.3.left/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
-    <state width="1078" height="293" key="GridCell.Tab.3.right" timestamp="1588945279073">
+    <state width="1078" height="276" key="GridCell.Tab.3.left/0.0.1366.728@0.0.1366.728" timestamp="1589088711847" />
+    <state width="1078" height="276" key="GridCell.Tab.3.right" timestamp="1589088711847">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1078" height="293" key="GridCell.Tab.3.right/0.0.1366.728@0.0.1366.728" timestamp="1588945279073" />
+    <state width="1078" height="276" key="GridCell.Tab.3.right/0.0.1366.728@0.0.1366.728" timestamp="1589088711847" />
     <state width="220" height="477" key="HiddenNamespacesPopup" timestamp="1588499189930">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
